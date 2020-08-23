@@ -7,7 +7,7 @@
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
-        Title="MainWindowView" MinWidth="1440" MinHeight="900" WindowStartupLocation="CenterScreen">
+        Title="HETS" MinWidth="1440" MinHeight="900" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
 
         <Grid.ColumnDefinitions>
