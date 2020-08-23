@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="ResultsModule.Views.ResultsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ResultsModule.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="700" Background="White">
+    <Grid Margin="5">
+        <Border BorderBrush="Black" BorderThickness="1" Background="GhostWhite">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Row 1-->
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="5" Text="Results" FontSize="26"/>
+                <!--Row 2-->
+                <DataGrid Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Margin="5" Background="AliceBlue">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="HW Name" Width="0.25*"/>
+                        <DataGridTextColumn Header="Compilation Test" Width="0.25*"/>
+                        <DataGridTextColumn Header="Run Test" Width="0.25*"/>
+                        <DataGridTextColumn Header="I/O Test" Width="0.25*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Grid.Row="3" Grid.Column="0" VerticalAlignment="Bottom" Content="Export to Excel" Margin="5" FontSize="20" Padding="10"/>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</UserControl>
