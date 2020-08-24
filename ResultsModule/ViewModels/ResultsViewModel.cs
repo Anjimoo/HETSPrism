@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using DataBuilders;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using ResultsModule.Models;
@@ -11,8 +12,9 @@ namespace ResultsModule.ViewModels
 {
     public class ResultsViewModel : BindableBase, INavigationAware
     {
+        private List<HomeExercise> _homeExercises;
         public DelegateCommand ExportToExcel { get; set; }
-        public ObservableCollection<ExcelModel> excelModels { get; set; }
+        public ObservableCollection<HomeExercise> homeExercises { get; set; }
 
         public ResultsViewModel()
         {
@@ -21,14 +23,18 @@ namespace ResultsModule.ViewModels
 
         private void ExecuteExportToExcel()
         {
-           
+           //TODO
         }
 
-
+        
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-         
+            if (navigationContext.Parameters.ContainsKey("homeexercises"))
+            {
+                _homeExercises = navigationContext.Parameters.GetValue<List<HomeExercise>>("homeexercises");
+                // TODO convert to excelModel function
+            }
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

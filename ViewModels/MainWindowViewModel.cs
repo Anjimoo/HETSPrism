@@ -87,6 +87,7 @@ namespace HETSPrism.ViewModels
             {
                 var parameter = new NavigationParameters();
                 parameter.Add("homeexercises", parser.HomeExercises);
+                parameter.Add("regionManager", _regionManager);
                 _passed = true;
                 _regionManager.RequestNavigate("ContentRegion", uri, parameter);
             }

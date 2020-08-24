@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using System.Windows.Controls.Ribbon;
 
 namespace IOTestModule.ViewModels
 {
@@ -18,6 +19,10 @@ namespace IOTestModule.ViewModels
         public DelegateCommand StartTest { get; set; }
         public DelegateCommand AddInputFile { get; set; }
         public DelegateCommand<InputOutputModel> AddOutputFile { get; set; }
+
+        private List<HomeExercise> _homeExercises;
+
+        private IRegionManager _regionManager;
         
         private bool _checkCompatibility;
         public bool CheckCompatibility
@@ -73,14 +78,19 @@ namespace IOTestModule.ViewModels
 
         private void ExecuteStartTest()
         {
+            //TODO
 
+            var parameter = new NavigationParameters();
+            parameter.Add("homeexercises", _homeExercises);
+            _regionManager.RequestNavigate("ContentRegion", "ResultsView");
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             if (navigationContext.Parameters.ContainsKey("homeexercises"))
             {
-                var homeExercises = navigationContext.Parameters.GetValue<List<HomeExercise>>("homeexercises");
+                _homeExercises = navigationContext.Parameters.GetValue<List<HomeExercise>>("homeexercises");
+                _regionManager = navigationContext.Parameters.GetValue<IRegionManager>("regionManager");
             }
         }
 
