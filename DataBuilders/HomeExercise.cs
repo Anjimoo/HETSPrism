@@ -6,5 +6,8 @@ namespace DataBuilders
     {
         public string HomeExercisePath { get; set; }
         public string HomeExerciseID { get; set; }
+        
+        public string CompilationOutput { get; set; }
+        public string CompilationErrorOutput { get; set; }
     }
 }

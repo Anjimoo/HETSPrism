@@ -67,13 +67,17 @@ namespace HETSPrism.ViewModels
             }
             else
             {
-                FolderPath = "Failed to import home exercises";
+                MessageBox.Show("Failed to import home exercises");
             }
         }
 
         private void ExecuteCompilationTest(string uri)
         {
-            Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
+            string message = Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
+            if(message != "OK")
+            {
+                MessageBox.Show(message);
+            }
             _regionManager.RequestNavigate("ContentRegion", uri);
         }
 
