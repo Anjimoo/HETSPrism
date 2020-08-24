@@ -11,10 +11,11 @@ namespace HETSPrism.Services
     public static class CompilationTest
     {
 
-        public static void StartCompilationTest(List<HomeExercise> homeExercises, string _javaCompiler)
+        public static void StartCompilationTest(List<HomeExercise> homeExercises)
         {
             foreach(var homeExercise in homeExercises)
             {
+                // need try catch
                 Process process = new Process();
                 process.StartInfo.FileName = "javac.exe";
                 process.StartInfo.Arguments = $"-Xlint {homeExercise.HomeExercisePath}";

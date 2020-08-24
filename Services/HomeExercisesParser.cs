@@ -85,7 +85,7 @@ namespace HETSPrism.Services
                             ExtractZipFile(file);
                             dirs.Push(currentDir);
                             extracted = true;
-                        }else if (file.EndsWith(".java"))
+                        }else if (file.EndsWith(".java") || file.EndsWith(".jar"))
                         {
                             Console.WriteLine();
                             CreateHomeExercise(file);

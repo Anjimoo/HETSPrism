@@ -73,7 +73,7 @@ namespace HETSPrism.ViewModels
 
         private void ExecuteCompilationTest(string uri)
         {
-            //Services.CompilationTest.StartCompilationTest(parser.HomeExercises, CompilerPath);
+            Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
             _regionManager.RequestNavigate("ContentRegion", uri);
         }
 
