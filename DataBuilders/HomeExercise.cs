@@ -8,6 +8,7 @@ namespace DataBuilders
         private string homeExercisePath;
         public string HomeExercisePath
         {
+            
             get { return homeExercisePath; }
             set { SetProperty(ref homeExercisePath, value); }
         }

@@ -35,7 +35,6 @@ namespace HETSPrism.ViewModels
             get { return _canTest; }
             set { SetProperty(ref _canTest, value); }
         }
-
         public string FolderPath 
         {
             get { return _folderPath; }
