@@ -32,7 +32,8 @@ namespace ResultsModule.ViewModels
         //called on Export To Excel click
         private void ExecuteExportToExcel()
         {
-            //TODO with _homeExercises as send parameter
+            Models.ExportToExcel.ToCsv(HomeExercises);
+                
         }
 
         private void UpdatedHomeExercises(ObservableCollection<HomeExercise> homeExercises)
