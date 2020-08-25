@@ -33,7 +33,7 @@ namespace ResultsModule.ViewModels
         private void ExecuteExportToExcel()
         {
             Models.ExportToExcel.ToCsv(HomeExercises);
-                
+
         }
 
         private void UpdatedHomeExercises(ObservableCollection<HomeExercise> homeExercises)
