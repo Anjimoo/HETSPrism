@@ -84,8 +84,8 @@ namespace IOTestModule.ViewModels
         //called on Start Test click
         private void ExecuteStartTest()
         {
-            //TODO
-
+            //TODO use _homeExercises like List<HomeExercise>
+            
 
             // change view to ResultsView and publish changes in _homeExercises
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);

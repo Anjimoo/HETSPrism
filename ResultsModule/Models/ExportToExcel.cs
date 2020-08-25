@@ -27,12 +27,5 @@ namespace ResultsModule.Models
              File.AppendAllText(csvFiles, csvcontent.ToString());
         }
 
-
-
-
-
-
-
-
     }
 }

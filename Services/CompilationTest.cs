@@ -16,6 +16,7 @@ namespace HETSPrism.Services
         {
             foreach(var homeExercise in homeExercises)
             {
+                // definition of process
                 Process process = new Process();
                 process.StartInfo.FileName = "javac.exe";
                 process.StartInfo.Arguments = $"-Xlint {homeExercise.HomeExercisePath}";
