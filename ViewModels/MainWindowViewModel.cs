@@ -9,6 +9,10 @@ using Microsoft.Win32;
 using System.IO;
 using HETSPrism.Services;
 using System.Windows.Forms;
+using Prism.Events;
+using DataBuilders;
+using Prism.Common;
+using System.Collections.ObjectModel;
 
 namespace HETSPrism.ViewModels
 {
@@ -20,8 +24,10 @@ namespace HETSPrism.ViewModels
         public DelegateCommand<string> CompilationTest { get; set; }
 
         private HomeExercisesParser parser;
+        
         private string _folderPath;
         private readonly IRegionManager _regionManager;
+        private readonly IEventAggregator _eventAggregator;
         private bool _canTest;
         private bool _passed;
         public bool CanTest
@@ -30,13 +36,13 @@ namespace HETSPrism.ViewModels
             set { SetProperty(ref _canTest, value); }
         }
 
-        public string FolderPath
+        public string FolderPath 
         {
             get { return _folderPath; }
             set { SetProperty(ref _folderPath, value); }
         }
 
-        public MainWindowViewModel(IRegionManager regionManager)
+        public MainWindowViewModel(IRegionManager regionManager, IEventAggregator eventAggregator)
         {
             ImportHomeExercise = new DelegateCommand(ExecuteImportHomeExercise);
             CompilationTest = new DelegateCommand<string>(ExecuteCompilationTest)
@@ -45,13 +51,15 @@ namespace HETSPrism.ViewModels
                 .ObservesCanExecute(() => CanTest);
             ShowResults = new DelegateCommand<string>(ExecuteShowResults);
             _regionManager = regionManager;
+            _eventAggregator = eventAggregator;
             CanTest = false;
             _passed = false;
         }
-
+        
+        // called when Import Home Exercise clicked
         void ExecuteImportHomeExercise()
         {
-            //CanTest = true;
+            _regionManager.RequestNavigate("ContentRegion", "ResultsView");
             FolderBrowserDialog openFileDialog = new FolderBrowserDialog();
             var result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
@@ -60,9 +68,11 @@ namespace HETSPrism.ViewModels
                 parser = new HomeExercisesParser(FolderPath);
                 CanTest = true;
             }
+
             if (parser != null && parser.HomeExercises.Count > 0)
             {
                 FolderPath = $"\n Succesfully imported {parser.HomeExercises.Count} Home Exercises";
+                _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(parser.HomeExercises);
                 CanTest = true;
             }
             else
@@ -71,6 +81,7 @@ namespace HETSPrism.ViewModels
             }
         }
 
+        //called when Compilation Test clicked
         private void ExecuteCompilationTest(string uri)
         {
             string message = Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
@@ -78,9 +89,11 @@ namespace HETSPrism.ViewModels
             {
                 MessageBox.Show(message);
             }
+            _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(parser.HomeExercises);
             _regionManager.RequestNavigate("ContentRegion", uri);
         }
 
+        //called when Run I/O Test clicked
         private void ExecuteRunIOTest(string uri)
         {
             if (parser.HomeExercises != null && !_passed)
@@ -96,6 +109,8 @@ namespace HETSPrism.ViewModels
                 _regionManager.RequestNavigate("ContentRegion", uri);
             }
         }
+
+        //called when Results clicked
         private void ExecuteShowResults(string uri)
         {
             _regionManager.RequestNavigate("ContentRegion", uri);

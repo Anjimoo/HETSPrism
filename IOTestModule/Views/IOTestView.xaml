@@ -29,7 +29,7 @@
                 <TextBlock Text="Input/Output Test" FontSize="26" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Grid.Row="0"/>
                 <TextBlock Text="Added test cases" FontSize="20" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="1" Margin="5"/>
                 <Button Grid.Column="0" Grid.Row="3" Content="Add I/O Files" FontSize="20" Margin="5" 
-                        Padding="5" Command="{Binding AddInputFile}"/>
+                        Padding="5" Command="{Binding AddIOFiles}"/>
                 <Button Grid.Column="0" Grid.Row="4" Content="Add Output File" FontSize="20" Margin="5" 
                         Padding="5" Command="{Binding AddOutputFile}"/>
                 <CheckBox Grid.Row="5" Grid.Column="0" FontSize="16" Margin="5" Content="Check I/O compatibility" 

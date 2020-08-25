@@ -1,6 +1,7 @@
 ﻿using DataBuilders;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -15,12 +16,12 @@ namespace HETSPrism.Services
 
         public string RootPath { get; set; }
         public bool IsExtractedFirst { get; set; }
-        public List<HomeExercise> HomeExercises { get; set; }
+        public ObservableCollection<HomeExercise> HomeExercises { get; set; }
         public HomeExercisesParser(string folderPath)
         {
             _folderPath = folderPath;
             IsExtractedFirst = false;
-            HomeExercises = new List<HomeExercise>();
+            HomeExercises = new ObservableCollection<HomeExercise>();
             TraverseTree();
         }
 
@@ -117,7 +118,7 @@ namespace HETSPrism.Services
         {
             string fileID = new DirectoryInfo(Path.GetDirectoryName(fileName)).Name;
             var homeExercise = new HomeExercise()
-            { HomeExercisePath = fileName, HomeExerciseID = fileID};
+            { HomeExercisePath = fileName, HomeExerciseName = fileID};
             HomeExercises.Add(homeExercise);
         }
 

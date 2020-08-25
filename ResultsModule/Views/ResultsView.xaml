@@ -25,15 +25,17 @@
                 <!--Row 1-->
                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="5" Text="Results" FontSize="26"/>
                 <!--Row 2-->
-                <DataGrid Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Margin="5" Background="AliceBlue">
+                <DataGrid Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Margin="5" Background="AliceBlue" 
+                          AutoGenerateColumns="False" ItemsSource="{Binding HomeExercises, Mode=TwoWay}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="HW Name" Width="0.25*"/>
-                        <DataGridTextColumn Header="Compilation Test" Width="0.25*"/>
+                        <DataGridTextColumn Header="HW Name" Binding="{Binding HomeExerciseName, Mode=TwoWay}" Width="0.25*"/>
+                        <DataGridTextColumn Header="Compilation Test" Width="0.25*" Binding="{Binding CompilationOutput, Mode=TwoWay}"/>
                         <DataGridTextColumn Header="Run Test" Width="0.25*"/>
                         <DataGridTextColumn Header="I/O Test" Width="0.25*"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button Grid.Row="3" Grid.Column="0" VerticalAlignment="Bottom" Content="Export to Excel" Margin="5" FontSize="20" Padding="10"/>
+                <Button Grid.Row="3" Grid.Column="0" VerticalAlignment="Bottom" Content="Export to Excel" Margin="5" FontSize="20" 
+                        Padding="10" Command="{Binding ExportToExcel}"/>
 
             </Grid>
         </Border>

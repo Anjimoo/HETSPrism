@@ -1,6 +1,7 @@
 ﻿using DataBuilders;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -11,7 +12,7 @@ namespace HETSPrism.Services
     public static class CompilationTest
     {
 
-        public static string StartCompilationTest(List<HomeExercise> homeExercises)
+        public static string StartCompilationTest(ObservableCollection<HomeExercise> homeExercises)
         {
             foreach(var homeExercise in homeExercises)
             {
