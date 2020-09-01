@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod;
 
 namespace IOTestModule.Views
 {
@@ -23,5 +25,9 @@ namespace IOTestModule.Views
             InitializeComponent();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+          
+        }
     }
 }

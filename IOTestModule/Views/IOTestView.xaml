@@ -35,9 +35,9 @@
                 <CheckBox Grid.Row="5" Grid.Column="0" FontSize="16" Margin="5" Content="Check I/O compatibility" 
                           IsChecked="{Binding CheckCompatibility}" />
                 <Button Grid.Column="0" Grid.Row="6" Content="Start Test" FontSize="20" VerticalAlignment="Bottom" 
-                        Padding="5" Margin="5" Command="{Binding StartTest}"/>
+                        Padding="5" Margin="5" Command="{Binding StartTest}" Click="Button_Click"/>
 
-                <DataGrid Grid.Column="2" Grid.Row="3" Grid.RowSpan="4" Background="AliceBlue" ItemsSource="{Binding InputOutputModels, Mode=TwoWay}"
+                <DataGrid x:Name="testCasesDataGrid" Grid.Column="2" Grid.Row="3" Grid.RowSpan="4" Background="AliceBlue" ItemsSource="{Binding InputOutputModels, Mode=TwoWay}"
                           AutoGenerateColumns="False" Margin="5">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Input" Width="0.5*" Binding="{Binding InputText, Mode=TwoWay}"/>
