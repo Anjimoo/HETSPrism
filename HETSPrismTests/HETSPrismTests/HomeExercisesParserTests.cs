@@ -5,10 +5,10 @@ using Xunit;
 
 namespace HETSPrismTests
 {
-    public class UnitTest1
+    public class HomeExercisesParserTests
     {
         [Fact]
-        public void Test1()
+        public void CreateHomeExerciseTest()
         {
             //Arrange
             string path = "C:\\Users\anton\\Desktop\\HETS.Project\\Matala3\\JavaExercises\\Exc1\\excercise1\\495398\\ArithmeticApp.java";

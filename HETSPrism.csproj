@@ -11,18 +11,22 @@
     <Compile Remove="DataBuilders\**" />
     <Compile Remove="HETSPrismTests\**" />
     <Compile Remove="IOTestModule\**" />
+    <Compile Remove="ResultsModuleTests\**" />
     <Compile Remove="ResultsModule\**" />
     <EmbeddedResource Remove="DataBuilders\**" />
     <EmbeddedResource Remove="HETSPrismTests\**" />
     <EmbeddedResource Remove="IOTestModule\**" />
+    <EmbeddedResource Remove="ResultsModuleTests\**" />
     <EmbeddedResource Remove="ResultsModule\**" />
     <None Remove="DataBuilders\**" />
     <None Remove="HETSPrismTests\**" />
     <None Remove="IOTestModule\**" />
+    <None Remove="ResultsModuleTests\**" />
     <None Remove="ResultsModule\**" />
     <Page Remove="DataBuilders\**" />
     <Page Remove="HETSPrismTests\**" />
     <Page Remove="IOTestModule\**" />
+    <Page Remove="ResultsModuleTests\**" />
     <Page Remove="ResultsModule\**" />
   </ItemGroup>
 

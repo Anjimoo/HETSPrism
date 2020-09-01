@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTestModule", "IOTestModul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResultsModule", "ResultsModule\ResultsModule.csproj", "{2692DE2A-ECBA-40BC-BDF4-794C5A1BFFD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HETSPrismTests", "HETSPrismTests\HETSPrismTests\HETSPrismTests.csproj", "{6F0DA76F-21C9-4725-B177-73B39AB248AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HETSPrismTests", "HETSPrismTests\HETSPrismTests\HETSPrismTests.csproj", "{6F0DA76F-21C9-4725-B177-73B39AB248AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
