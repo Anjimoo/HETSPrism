@@ -7,7 +7,7 @@
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
-        Title="HETS" MinWidth="1440" MinHeight="900" WindowStartupLocation="CenterScreen">
+        Title="HETS" MinWidth="1440" MinHeight="900" WindowStartupLocation="CenterScreen" Background="Azure">
     <Grid Margin="10">
 
         <Grid.ColumnDefinitions>
@@ -15,26 +15,26 @@
             <ColumnDefinition MinWidth="500"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="88.6"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!-- Row 1-->
-        <Button Grid.Row="0" Grid.Column="0" Content="Import Exercises Folder" Margin="10,10,10,10" Padding="20" FontSize="20"
+        <Button Grid.Row="0" Grid.Column="0" Background="Azure" Content="Import Exercises Folder" Margin="10,10,10,10" Padding="20" FontSize="20"
                 Command="{Binding ImportHomeExercise}"/>
         <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" Margin="10" Padding="2" Text="{Binding FolderPath, Mode=TwoWay}"
                  TextAlignment="Left" Grid.ColumnSpan="1"/>
         <!--Row 2-->
         <ContentControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" prism:RegionManager.RegionName="ContentRegion"/>
-        <Button x:Name="CompilationTest" Grid.Row="1" Grid.Column="0" Margin="10,10,10,10" Command="{Binding CompilationTest}" 
+        <Button x:Name="CompilationTest" Grid.Row="1" Background="Azure" Grid.Column="0" Margin="10,10,10,10" Command="{Binding CompilationTest}" 
                 Content="Start compilation Test" Padding="20" FontSize="20" CommandParameter="ResultsView"/>
         <!--Row 3-->
-        <Button Grid.Row="2" Grid.Column="0" Content="Run Input/Output Test" Command="{Binding RunIOTest}"
+        <Button Grid.Row="2" Grid.Column="0" Background="Azure" Content="Run Input/Output Test" Command="{Binding RunIOTest}"
                 CommandParameter="IOTestView" Margin="10,10,10,10" Padding="20" FontSize="20"/>
         <!--Row 4-->
-        <Button Grid.Row="3" Grid.Column="0" Content="Results" Command="{Binding ShowResults}"
+        <Button Grid.Row="3" Grid.Column="0" Background="Azure" Content="Results" Command="{Binding ShowResults}"
                 CommandParameter="ResultsView" Margin="10" Padding="20" FontSize="20"/>
 
 

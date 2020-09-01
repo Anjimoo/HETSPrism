@@ -1,6 +1,7 @@
 ﻿using DataBuilders;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -11,25 +12,34 @@ namespace HETSPrism.Services
     public static class CompilationTest
     {
 
-        public static void StartCompilationTest(List<HomeExercise> homeExercises)
+        public static string StartCompilationTest(ObservableCollection<HomeExercise> homeExercises)
         {
             foreach(var homeExercise in homeExercises)
             {
-                // need try catch
+                
+                // definition of process
                 Process process = new Process();
                 process.StartInfo.FileName = "javac.exe";
                 process.StartInfo.Arguments = $"-Xlint {homeExercise.HomeExercisePath}";
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
-                process.Start();
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                try
+                {
+                    process.Start();
+                }
+                catch
+                {
+                    return "Error: javac.exe compiler not found in path variables";
+                }
 
-                StreamReader sr = process.StandardOutput;
-                string output = sr.ReadToEnd();
                 StreamReader se = process.StandardError;
-                string error = se.ReadToEnd();
-                process.WaitForExit();
-                
+                homeExercise.CompilationErrorOutput = se.ReadToEnd();
+
             }
+            return "OK";
         }
     }
 }
