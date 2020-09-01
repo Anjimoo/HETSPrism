@@ -17,6 +17,7 @@ namespace HETSPrismTests
             
             //Act
             parser.CreateHomeExercise(path);
+   
 
             //Assert
             Assert.Collection<HomeExercise>(parser.HomeExercises, item => item.HomeExercisePath.Contains(path));
