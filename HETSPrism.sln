@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResultsModule", "ResultsMod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HETSPrismTests", "HETSPrismTests\HETSPrismTests\HETSPrismTests.csproj", "{7C20381F-B3AD-46D3-88CB-7982D9063237}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResultsModuleTests", "ResultsModuleTests\ResultsModuleTests\ResultsModuleTests.csproj", "{564A47B7-97E2-4829-9AAE-01C70BCDFD3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{7C20381F-B3AD-46D3-88CB-7982D9063237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C20381F-B3AD-46D3-88CB-7982D9063237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C20381F-B3AD-46D3-88CB-7982D9063237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{564A47B7-97E2-4829-9AAE-01C70BCDFD3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{564A47B7-97E2-4829-9AAE-01C70BCDFD3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{564A47B7-97E2-4829-9AAE-01C70BCDFD3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{564A47B7-97E2-4829-9AAE-01C70BCDFD3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
