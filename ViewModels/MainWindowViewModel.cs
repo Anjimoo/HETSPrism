@@ -65,6 +65,7 @@ namespace HETSPrism.ViewModels
             {
                 FolderPath = openFileDialog.SelectedPath;
                 parser = new HomeExercisesParser(FolderPath);
+                parser.TraverseTree();
                 CanTest = true;
             }
 

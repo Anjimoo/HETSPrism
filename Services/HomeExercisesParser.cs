@@ -22,7 +22,6 @@ namespace HETSPrism.Services
             _folderPath = folderPath;
             IsExtractedFirst = false;
             HomeExercises = new ObservableCollection<HomeExercise>();
-            TraverseTree();
         }
 
         public void TraverseTree()

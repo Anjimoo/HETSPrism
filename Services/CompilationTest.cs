@@ -16,12 +16,16 @@ namespace HETSPrism.Services
         {
             foreach(var homeExercise in homeExercises)
             {
+                
                 // definition of process
                 Process process = new Process();
                 process.StartInfo.FileName = "javac.exe";
                 process.StartInfo.Arguments = $"-Xlint {homeExercise.HomeExercisePath}";
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
                 try
                 {
                     process.Start();
@@ -30,12 +34,10 @@ namespace HETSPrism.Services
                 {
                     return "Error: javac.exe compiler not found in path variables";
                 }
-                StreamReader sr = process.StandardOutput;
-                homeExercise.CompilationOutput = sr.ReadToEnd();
+
                 StreamReader se = process.StandardError;
                 homeExercise.CompilationErrorOutput = se.ReadToEnd();
-                process.WaitForExit();
-                
+
             }
             return "OK";
         }
