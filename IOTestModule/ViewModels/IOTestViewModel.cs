@@ -12,6 +12,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Controls.Ribbon;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
 
 namespace IOTestModule.ViewModels
 {
@@ -85,10 +88,41 @@ namespace IOTestModule.ViewModels
         private void ExecuteStartTest()
         {
             //TODO use _homeExercises like List<HomeExercise>
-            
+            foreach (var homeExercise in _homeExercises)
+            {
+                for (int i = 0; i < InputOutputModels.Count; i++)
+                {
+                Process process = new Process();
+                process.StartInfo.FileName = "C:\\Users\\IDAN TOKAYER\\Source\\Repos\\Anjimoo\\HETSPrism\\java.exe";
+                process.StartInfo.Arguments = $"-Xlint {homeExercise.HomeExercisePath}";
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                try
+                {
+                    process.Start();
+                }
+                catch(InvalidCastException e)
+                {
+                 throw new InvalidCastException("Error: javac.exe compiler not found in path variables", e);
+                }
+                //return error compilation output
+                StreamReader se = process.StandardError;
+                //return compilation output
+                StreamReader sop = process.StandardOutput;
+                homeExercise.CompilationErrorOutput = se.ReadToEnd();
+                homeExercise.CompilationOutput = sop.ReadToEnd();
+                    if (InputOutputModels[i].OutputText == homeExercise.CompilationOutput)
+                    {
+                        //return i/o succeed
+                    }
+                }
+            }
 
-            // change view to ResultsView and publish changes in _homeExercises
-            _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
+                // change view to ResultsView and publish changes in _homeExercises
+                _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
         }
 
