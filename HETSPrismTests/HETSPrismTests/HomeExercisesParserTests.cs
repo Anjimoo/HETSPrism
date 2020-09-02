@@ -25,13 +25,13 @@ namespace HETSPrismTests
         [Fact]
         public void ExtractZipFileTests()
         {
-            string path = @"C:\Users\user\Desktop\excercise1.zip";
-            string path1 = "C:\\Users\\user\\Desktop\\excercise1\\_495349_assignsubmission_file_\\ArithmeticApp.java";
+            string path = @"C:\Users\user\Desktop\New folder\_495349_assignsubmission_file_\313410631_308310903.zip";
+            string path1 = "C:\\Users\\user\\Desktop\\New folder\\_495349_assignsubmission_file_\\ArithmeticApp.java";
             var parser = new HomeExercisesParser("folder");
             parser.ExtractZipFile(path);
             Assert.False(File.Exists(path));
             Assert.True(File.Exists(path1));
-            Assert.False(File.Exists(path));
+            
         }
 
 
