@@ -2,7 +2,7 @@ using DataBuilders;
 using HETSPrism.Services;
 using System;
 using Xunit;
-
+using System.IO;
 namespace HETSPrismTests
 {
     public class HomeExercisesParserTests
@@ -22,6 +22,30 @@ namespace HETSPrismTests
             //Assert
             Assert.Collection<HomeExercise>(parser.HomeExercises, item => item.HomeExercisePath.Contains(path));
         }
+        [Fact]
+        public void ExtractZipFileTests()
+        {
+            string path = @"C:\Users\user\Desktop\excercise1.zip";
+            string path1 = "C:\\Users\\user\\Desktop\\excercise1\\_495349_assignsubmission_file_\\ArithmeticApp.java";
+            var parser = new HomeExercisesParser("folder");
+            parser.ExtractZipFile(path);
+            Assert.False(File.Exists(path));
+            Assert.True(File.Exists(path1));
+            Assert.False(File.Exists(path));
+        }
+
+
+
+        
+
+
+
+
+
+
+
+
+
     }
 }
 
