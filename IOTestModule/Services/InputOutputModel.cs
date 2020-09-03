@@ -7,6 +7,7 @@ namespace IOTestModule.Services
     public class InputOutputModel
     {
         public string InputText { get; set; }
+        public string InputTextClient { get; set; }
         public string OutputText { get; set; }
     }
 }

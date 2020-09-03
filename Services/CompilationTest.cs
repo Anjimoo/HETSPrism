@@ -19,7 +19,7 @@ namespace HETSPrism.Services
                 
                 // definition of process
                 Process process = new Process();
-                process.StartInfo.FileName = "C:\\Users\\IDAN TOKAYER\\Source\\Repos\\Anjimoo\\HETSPrism\\javac.exe";
+               process.StartInfo.FileName = "C:\\Program Files\\Java\\jdk-14.0.1\\bin\\javac.exe";
                 process.StartInfo.Arguments = $"-Xlint {homeExercise.HomeExercisePath}";
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
@@ -37,9 +37,8 @@ namespace HETSPrism.Services
 
                 StreamReader se = process.StandardError;
                 //return compilation output
-                StreamReader sop = process.StandardOutput;
                 homeExercise.CompilationErrorOutput = se.ReadToEnd();
-                homeExercise.CompilationOutput = sop.ReadToEnd();
+
 
             }
             return "OK";

@@ -26,6 +26,13 @@ namespace DataBuilders
             set { SetProperty(ref compilationOutput, value); }
         }
 
+        private string runTestOutput;
+        public string RunTestOutput
+        {
+            get { return runTestOutput; }
+            set { SetProperty(ref runTestOutput, value); }
+        }
+
         private string compilationErrorOutput;
         public string CompilationErrorOutput
         {

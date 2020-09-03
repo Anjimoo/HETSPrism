@@ -74,7 +74,11 @@ namespace IOTestModule.ViewModels
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
             {
-                var tempIOModel = new InputOutputModel { InputText = InputOutputParser.Parser(openFileDialog.FileName) };
+                var tempIOModel = new InputOutputModel {
+                    InputTextClient = System.IO.Path.GetFullPath(openFileDialog.FileName)
+                ,
+                    InputText = InputOutputParser.Parser(openFileDialog.FileName)
+                };
                 ExecuteAddOutputFile(tempIOModel);
             }
         }
@@ -87,46 +91,69 @@ namespace IOTestModule.ViewModels
         //called on Start Test click
         private void ExecuteStartTest()
         {
-            //TODO use _homeExercises like List<HomeExercise>
             foreach (var homeExercise in _homeExercises)
             {
                 for (int i = 0; i < InputOutputModels.Count; i++)
                 {
-                Process process = new Process();
-                process.StartInfo.FileName = "C:\\Users\\IDAN TOKAYER\\Source\\Repos\\Anjimoo\\HETSPrism\\java.exe";
-                process.StartInfo.Arguments = $"-Xlint {homeExercise.HomeExercisePath}";
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.RedirectStandardInput = true;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.CreateNoWindow = true;
-                try
-                {
-                    process.Start();
-                }
-                catch(InvalidCastException e)
-                {
-                 throw new InvalidCastException("Error: javac.exe compiler not found in path variables", e);
-                }
-                //return error compilation output
-                StreamReader se = process.StandardError;
-                //return compilation output
-                StreamReader sop = process.StandardOutput;
-                homeExercise.CompilationErrorOutput = se.ReadToEnd();
-                homeExercise.CompilationOutput = sop.ReadToEnd();
+                    //string input = homeExercise.HomeExercisePath;
+                    //int index = input.IndexOf(".");
+                    //string HomeExercisePathWithNotDot = input.Substring(0, index);
+
+                    Process process = new Process();
+                    process.StartInfo.FileName = @"java.exe"; 
+                    process.StartInfo.Arguments = $"{homeExercise.HomeExercisePath} < {InputOutputModels[i].InputText }";
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    try
+                    {
+                        process.Start();
+                    }
+                    catch (InvalidCastException e)
+                    {
+                        throw new InvalidCastException("Error: java.exe compiler not found in path variables", e);
+                    }
+                    //return error compilation output
+                    //return compilation output
+                    var output = new List<string>();
+                    while (process.StandardOutput.Peek() > -1)
+                    {
+                        output.Add(process.StandardOutput.ReadLine());
+                    }
+
+                    while (process.StandardError.Peek() > -1)
+                    {
+                        output.Add(process.StandardError.ReadLine());
+                    }
+                    //StreamReader se = process.StandardOutput;
+                    ////return compilation output
+                    //string seoutput = se.ReadToEnd();
+
                     if (InputOutputModels[i].OutputText == homeExercise.CompilationOutput)
                     {
                         //return i/o succeed
                     }
+
                 }
+
             }
 
-                // change view to ResultsView and publish changes in _homeExercises
-                _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
+            //TODO use _homeExercises like List<HomeExercise>
+
+
+
+            // change view to ResultsView and publish changes in _homeExercises
+            _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
         }
 
+
         //get parameters from another screen
+        public void DataReceived(object sender, DataReceivedEventArgs e)
+        {
+
+        }
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             if (navigationContext.Parameters.ContainsKey("homeexercises"))
