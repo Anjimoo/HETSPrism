@@ -38,8 +38,9 @@ namespace IOTestModule.ViewModels
 
         public ObservableCollection<InputOutputModel> InputOutputModels { get; set; }
 
-        public IOTestViewModel(IEventAggregator eventAggregator)
+        public IOTestViewModel(IEventAggregator eventAggregator, IRegionManager regionManager)
         {
+            _regionManager = regionManager;
             _eventAggregator = eventAggregator;
             StartTest = new DelegateCommand(ExecuteStartTest, CanExecuteStartTest)
                 .ObservesProperty(() => CheckCompatibility);
@@ -121,8 +122,8 @@ namespace IOTestModule.ViewModels
                 }
             }
 
-                // change view to ResultsView and publish changes in _homeExercises
-                _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
+            // change view to ResultsView and publish changes in _homeExercises
+            _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
         }
 
@@ -132,7 +133,6 @@ namespace IOTestModule.ViewModels
             if (navigationContext.Parameters.ContainsKey("homeexercises"))
             {
                 _homeExercises = navigationContext.Parameters.GetValue<ObservableCollection<HomeExercise>>("homeexercises");
-                _regionManager = navigationContext.Parameters.GetValue<IRegionManager>("regionManager");
             }
         }
 

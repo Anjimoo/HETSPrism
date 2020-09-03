@@ -28,6 +28,7 @@ namespace HETSPrism.ViewModels
         private string _folderPath;
         private readonly IRegionManager _regionManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IDialogService _dialogService;
         private bool _canTest;
         private bool _passed;
         public bool CanTest
@@ -41,7 +42,8 @@ namespace HETSPrism.ViewModels
             set { SetProperty(ref _folderPath, value); }
         }
 
-        public MainWindowViewModel(IRegionManager regionManager, IEventAggregator eventAggregator)
+        public MainWindowViewModel(IRegionManager regionManager, IEventAggregator eventAggregator,
+            IDialogService dialogService)
         {
             ImportHomeExercise = new DelegateCommand(ExecuteImportHomeExercise);
             CompilationTest = new DelegateCommand<string>(ExecuteCompilationTest)
@@ -51,6 +53,7 @@ namespace HETSPrism.ViewModels
             ShowResults = new DelegateCommand<string>(ExecuteShowResults);
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
+            _dialogService = dialogService;
             CanTest = false;
             _passed = false;
         }
@@ -59,25 +62,23 @@ namespace HETSPrism.ViewModels
         void ExecuteImportHomeExercise()
         {
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
-            FolderBrowserDialog openFileDialog = new FolderBrowserDialog();
-            var result = openFileDialog.ShowDialog();
-            if (result == DialogResult.OK)
+            //get folder path from user
+            FolderPath = _dialogService.ShowFolderBrowserDialog();
+            if (FolderPath != null)
             {
-                FolderPath = openFileDialog.SelectedPath;
                 parser = new HomeExercisesParser(FolderPath);
                 parser.TraverseTree();
-                CanTest = true;
             }
 
             if (parser != null && parser.HomeExercises.Count > 0)
             {
-                FolderPath = $"\n Succesfully imported {parser.HomeExercises.Count} Home Exercises";
+                FolderPath = $"\nSuccesfully imported {parser.HomeExercises.Count} Home Exercises";
                 _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(parser.HomeExercises);
                 CanTest = true;
             }
             else
             {
-                MessageBox.Show("Failed to import home exercises");
+                _dialogService.ShowMessageBox("Failed to import home exercises");
             }
         }
 
@@ -87,7 +88,7 @@ namespace HETSPrism.ViewModels
             string message = Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
             if(message != "OK")
             {
-                MessageBox.Show(message);
+                _dialogService.ShowMessageBox(message);
             }
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(parser.HomeExercises);
             _regionManager.RequestNavigate("ContentRegion", uri);
@@ -100,7 +101,6 @@ namespace HETSPrism.ViewModels
             {
                 var parameter = new NavigationParameters();
                 parameter.Add("homeexercises", parser.HomeExercises);
-                parameter.Add("regionManager", _regionManager);
                 _passed = true;
                 _regionManager.RequestNavigate("ContentRegion", uri, parameter);
             }
