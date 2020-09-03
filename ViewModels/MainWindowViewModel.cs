@@ -61,6 +61,7 @@ namespace HETSPrism.ViewModels
         // called when Import Home Exercise clicked
         void ExecuteImportHomeExercise()
         {
+            _regionManager.RequestNavigate("ContentRegion", "IOTestView");
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
             //get folder path from user
             FolderPath = _dialogService.ShowFolderBrowserDialog();
@@ -97,17 +98,7 @@ namespace HETSPrism.ViewModels
         //called when Run I/O Test clicked
         private void ExecuteRunIOTest(string uri)
         {
-            if (parser.HomeExercises != null && !_passed)
-            {
-                var parameter = new NavigationParameters();
-                parameter.Add("homeexercises", parser.HomeExercises);
-                _passed = true;
-                _regionManager.RequestNavigate("ContentRegion", uri, parameter);
-            }
-            else
-            {
-                _regionManager.RequestNavigate("ContentRegion", uri);
-            }
+            _regionManager.RequestNavigate("ContentRegion", uri);
         }
 
         //called when Results clicked

@@ -39,12 +39,9 @@ namespace ResultsModule.ViewModels
         private void UpdatedHomeExercises(ObservableCollection<HomeExercise> homeExercises)
         {
             HomeExercises.Clear();
-            if (HomeExercises.Count == 0)
+            foreach(var homeExercise in homeExercises)
             {
-                foreach(var homeExercise in homeExercises)
-                {
-                    HomeExercises.Add(homeExercise);
-                }
+                HomeExercises.Add(homeExercise);
             }
         }
     }

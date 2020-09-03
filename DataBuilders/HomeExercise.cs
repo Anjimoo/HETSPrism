@@ -1,5 +1,6 @@
 ﻿using Prism.Mvvm;
 using System;
+using System.Windows;
 
 namespace DataBuilders
 {
@@ -31,6 +32,14 @@ namespace DataBuilders
         {
             get { return runTestOutput; }
             set { SetProperty(ref runTestOutput, value); }
+        }
+
+        private string runTestErrorOutput;
+
+        public string RunTestErrorOutput
+        {
+            get { return runTestErrorOutput; }
+            set { SetProperty(ref runTestErrorOutput, value); } 
         }
 
         private string compilationErrorOutput;

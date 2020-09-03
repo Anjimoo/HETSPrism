@@ -18,7 +18,7 @@ using System.Windows;
 
 namespace IOTestModule.ViewModels
 {
-    public class IOTestViewModel : BindableBase, INavigationAware
+    public class IOTestViewModel : BindableBase
     {
         private IEventAggregator _eventAggregator;
         public DelegateCommand StartTest { get; set; }
@@ -42,11 +42,13 @@ namespace IOTestModule.ViewModels
         {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Subscribe(UpdatedHomeExercises);
             StartTest = new DelegateCommand(ExecuteStartTest, CanExecuteStartTest)
                 .ObservesProperty(() => CheckCompatibility);
             AddIOFiles = new DelegateCommand(ExecuteAddIOFiles);
             AddOutputFile = new DelegateCommand<InputOutputModel>(ExecuteAddOutputFile);
             InputOutputModels = new ObservableCollection<InputOutputModel>();
+            _homeExercises = new ObservableCollection<HomeExercise>();
         }
 
         //called on Add Output File click
@@ -101,12 +103,15 @@ namespace IOTestModule.ViewModels
                     //string HomeExercisePathWithNotDot = input.Substring(0, index);
 
                     Process process = new Process();
-                    process.StartInfo.FileName = @"java.exe"; 
+                    process.StartInfo.FileName = @"java.exe";
+                    // arguments actually will not work if program does not need arguments and instead wants input in running time
                     process.StartInfo.Arguments = $"{homeExercise.HomeExercisePath} < {InputOutputModels[i].InputText }";
-                    process.StartInfo.CreateNoWindow = true;
+                    //process.StartInfo.CreateNoWindow = true;
                     process.StartInfo.UseShellExecute = false;
                     process.StartInfo.RedirectStandardOutput = true;
                     process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.RedirectStandardInput = true;
+                    
                     try
                     {
                         process.Start();
@@ -115,26 +120,40 @@ namespace IOTestModule.ViewModels
                     {
                         throw new InvalidCastException("Error: java.exe compiler not found in path variables", e);
                     }
+                    // needed if java Program wants some enter input
+                    using (StreamWriter sw = process.StandardInput){
+                        sw.Write(InputOutputModels[i].InputText);
+                    }
+                    // needed to see output from program
+                    using (StreamReader srOutput = process.StandardOutput)
+                    {
+                        homeExercise.RunTestOutput = srOutput.ReadToEnd();
+                    }
+                    // needed to see errors from program
+                    using (StreamReader srError = process.StandardError)
+                    {
+                        homeExercise.RunTestErrorOutput = srError.ReadToEnd();
+                    }
+
                     //return error compilation output
                     //return compilation output
-                    var output = new List<string>();
-                    while (process.StandardOutput.Peek() > -1)
-                    {
-                        output.Add(process.StandardOutput.ReadLine());
-                    }
+                    //var output = new List<string>();
+                    //while (process.StandardOutput.Peek() > -1)
+                    //{
+                    //    output.Add(process.StandardOutput.ReadLine());
+                    //}
 
-                    while (process.StandardError.Peek() > -1)
-                    {
-                        output.Add(process.StandardError.ReadLine());
-                    }
-                    //StreamReader se = process.StandardOutput;
-                    ////return compilation output
-                    //string seoutput = se.ReadToEnd();
+                    //while (process.StandardError.Peek() > -1)
+                    //{
+                    //    output.Add(process.StandardError.ReadLine());
+                    //}
+                    
 
-                    if (InputOutputModels[i].OutputText == homeExercise.CompilationOutput)
-                    {
-                        //return i/o succeed
-                    }
+
+                    //if (InputOutputModels[i].OutputText == homeExercise.CompilationOutput)
+                    //{
+                    //    //return i/o succeed
+                    //}
 
                 }
 
@@ -149,28 +168,19 @@ namespace IOTestModule.ViewModels
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
         }
 
-
         //get parameters from another screen
         public void DataReceived(object sender, DataReceivedEventArgs e)
         {
 
         }
-        public void OnNavigatedTo(NavigationContext navigationContext)
+
+        private void UpdatedHomeExercises(ObservableCollection<HomeExercise> homeExercises)
         {
-            if (navigationContext.Parameters.ContainsKey("homeexercises"))
+            _homeExercises.Clear();
+            foreach (var homeExercise in homeExercises)
             {
-                _homeExercises = navigationContext.Parameters.GetValue<ObservableCollection<HomeExercise>>("homeexercises");
+                _homeExercises.Add(homeExercise);
             }
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-
         }
     }
 }
