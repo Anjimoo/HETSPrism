@@ -14,13 +14,10 @@ namespace HETSPrism.Services
         private string _folderPath;
         public string ExtractPath { get; set; }
 
-        public string RootPath { get; set; }
-        public bool IsExtractedFirst { get; set; }
         public ObservableCollection<HomeExercise> HomeExercises { get; set; }
         public HomeExercisesParser(string folderPath)
         {
             _folderPath = folderPath;
-            IsExtractedFirst = false;
             HomeExercises = new ObservableCollection<HomeExercise>();
         }
 
@@ -113,7 +110,7 @@ namespace HETSPrism.Services
             }
         }
 
-        public void CreateHomeExercise(string fileName)
+        private void CreateHomeExercise(string fileName)
         {
             string fileID = new DirectoryInfo(Path.GetDirectoryName(fileName)).Name;
             var homeExercise = new HomeExercise()
@@ -121,7 +118,7 @@ namespace HETSPrism.Services
             HomeExercises.Add(homeExercise);
         }
 
-        public void ExtractZipFile(string filePath)
+        private void ExtractZipFile(string filePath)
         {
             ExtractPath = Path.GetDirectoryName(filePath);
            

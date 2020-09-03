@@ -12,20 +12,18 @@ namespace ResultsModuleTests
         [Fact]
         public void ToCsvTests()
         {
-          
-            //string AppPath = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-            //DirectoryInfo myDir = new DirectoryInfo(AppPath);
-            //string dataDir = myDir.Parent.Parent.FullName.ToString();
-            string path = "C:\\Users\\user\\source\\repos\\Anjimoo\\HETSPrism\\bin\\HomeExerciseReport.csv";
+            //Arrange
+            string AppPath = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+            DirectoryInfo myDir = new DirectoryInfo(AppPath);
+            string dataDir = myDir.Parent.Parent.FullName.ToString();
             HomeExercise homeExercise = new HomeExercise();
             var homeExercises = new ObservableCollection<HomeExercise>();
             homeExercises.Add(homeExercise);
+            //Act
             ExportToExcel.ToCsv(homeExercises);
-            Assert.True(File.Exists(path));
-          
-
-
-
+            //Assert
+            Assert.True(File.Exists(dataDir+"\\HomeExerciseReport.csv"));
+            
         }
     }
 }

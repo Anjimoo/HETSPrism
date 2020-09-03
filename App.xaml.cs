@@ -12,6 +12,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using HETSPrism.Services;
 
 namespace HETSPrism
 {
@@ -22,7 +23,7 @@ namespace HETSPrism
     {
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            
+            containerRegistry.RegisterInstance<IDialogService>(new DialogService());
             // register other needed services here
         }
         protected override Window CreateShell()
