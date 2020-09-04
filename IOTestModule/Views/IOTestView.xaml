@@ -34,6 +34,7 @@
                         Padding="5" Command="{Binding AddOutputFile}"/>
                 <CheckBox Grid.Row="5" Grid.Column="0" FontSize="16" Margin="5" Content="Check I/O compatibility" 
                           IsChecked="{Binding CheckCompatibility}" />
+                 <ProgressBar  Grid.Row="6" Grid.Column="0"  Height="20" Margin="5" VerticalAlignment="Top" />
                 <Button Grid.Column="0" Grid.Row="6" Content="Start Test" FontSize="20" VerticalAlignment="Bottom" 
                         Padding="5" Margin="5" Command="{Binding StartTest}"/>
 
@@ -44,9 +45,10 @@
                         <DataGridTextColumn Header="Output" Width="0.5*" Binding="{Binding OutputText, Mode=TwoWay}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+               
 
             </Grid>
-            
+
         </Border>
     </Grid>
 </UserControl>
