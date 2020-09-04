@@ -25,7 +25,6 @@ namespace IOTestModule.Services
     {
         public static void StartRunTest(ObservableCollection<HomeExercise> _homeExercises, ObservableCollection<InputOutputModel> InputOutputModels)
         {
-            if()
             foreach (var homeExercise in _homeExercises)
             {
                 homeExercise.compatibleRunTestList = new List<string>();              
@@ -69,18 +68,18 @@ namespace IOTestModule.Services
                     //equal and ignore from symbols (white space etc...)
                     if (String.Compare(InputOutputModels[i].OutputText, homeExercise.RunTestOutput, CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols)==0)
                     {
-                        //do somthing when the output's compatiable 
+                        //do something when the output's compatible 
                         homeExercise.compatibleRunTestList.Add("compatible");
                     }
                     else
                     {
-                        //do somthing when the output's not compatiable 
+                        //do something when the output's not compatible 
                         homeExercise.compatibleRunTestList.Add("not compatible");
                     }
 
                 }
-                    foreach (var compatibleRunTest in homeExercise.compatibleRunTestList)
-                    {
+                foreach (var compatibleRunTest in homeExercise.compatibleRunTestList)
+                { 
                     if(compatibleRunTest == "not compatible")
                     {
                         homeExercise.IsCompatibleRunTest = false;
