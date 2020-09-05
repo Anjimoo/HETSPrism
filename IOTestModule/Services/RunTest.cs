@@ -27,7 +27,7 @@ namespace IOTestModule.Services
         {
             foreach (var homeExercise in _homeExercises)
             {
-                homeExercise.compatibleRunTestList = new List<string>();              
+                homeExercise.CompatibleRunTestList = new List<string>();              
                 for (int i = 0; i < InputOutputModels.Count; i++)
                 {
                     Process process = new Process();
@@ -63,31 +63,35 @@ namespace IOTestModule.Services
                     using (StreamReader srError = process.StandardError)
                     {
                         homeExercise.RunTestErrorOutput = srError.ReadToEnd();
+                        if (homeExercise.RunTestErrorOutput != "")
+                        {
+                            homeExercise.IsRunTestOk = "No";
+                        }
                     }
 
                     //equal and ignore from symbols (white space etc...)
                     if (String.Compare(InputOutputModels[i].OutputText, homeExercise.RunTestOutput, CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols)==0)
                     {
                         //do something when the output's compatible 
-                        homeExercise.compatibleRunTestList.Add("compatible");
+                        homeExercise.CompatibleRunTestList.Add("compatible");
                     }
                     else
                     {
                         //do something when the output's not compatible 
-                        homeExercise.compatibleRunTestList.Add("not compatible");
+                        homeExercise.CompatibleRunTestList.Add("not compatible");
                     }
 
                 }
-                foreach (var compatibleRunTest in homeExercise.compatibleRunTestList)
+                foreach (var compatibleRunTest in homeExercise.CompatibleRunTestList)
                 { 
                     if(compatibleRunTest == "not compatible")
                     {
-                        homeExercise.IsCompatibleRunTest = false;
+                        homeExercise.IsCompatibleRunTest = "No";
                         break;
                     }
                     else
                     {
-                        homeExercise.IsCompatibleRunTest = true;
+                        homeExercise.IsCompatibleRunTest = "Yes";
                     }
                 }
 

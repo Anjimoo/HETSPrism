@@ -8,58 +8,61 @@ namespace DataBuilders
 {
     public class HomeExercise : BindableBase
     {
-        private string homeExercisePath;
-
+        private string _homeExercisePath;
         public string HomeExercisePath
         {
-            
-            get { return homeExercisePath; }
-            set { SetProperty(ref homeExercisePath, value); }
+            get { return _homeExercisePath; }
+            set { SetProperty(ref _homeExercisePath, value); }
         }
-        private string homeExerciseName;
+
+        private string _homeExerciseName;
         public string HomeExerciseName
         {
-            get { return homeExerciseName; }
-            set { SetProperty(ref homeExerciseName, value); }
+            get { return _homeExerciseName; }
+            set { SetProperty(ref _homeExerciseName, value); }
         }
 
-        private string compilationOutput;
-        public string CompilationOutput
-        {
-            get { return compilationOutput; }
-            set { SetProperty(ref compilationOutput, value); }
-        }
-
-
-
-        private string runTestOutput;
+        private string _runTestOutput;
         public string RunTestOutput
         {
-            get { return runTestOutput; }
-            set { SetProperty(ref runTestOutput, value); }
+            get { return _runTestOutput; }
+            set { SetProperty(ref _runTestOutput, value); }
         }
-        public List<string> compatibleRunTestList { get; set; }
+        public List<string> CompatibleRunTestList { get; set; }
 
-        private bool iscompatibleRunTest;
-        public bool IsCompatibleRunTest
+        private string _isCompatibleRunTest;
+        public string IsCompatibleRunTest
         {
-            get { return iscompatibleRunTest; }
-            set { SetProperty(ref iscompatibleRunTest, value); }
+            get { return _isCompatibleRunTest; }
+            set { SetProperty(ref _isCompatibleRunTest, value); }
         }
 
-        private string runTestErrorOutput;
-
+        private string _runTestErrorOutput;
         public string RunTestErrorOutput
         {
-            get { return runTestErrorOutput; }
-            set { SetProperty(ref runTestErrorOutput, value); } 
+            get { return _runTestErrorOutput; }
+            set { SetProperty(ref _runTestErrorOutput, value); } 
         }
 
-        private string compilationErrorOutput;
+        private string _compilationErrorOutput;
         public string CompilationErrorOutput
         {
-            get { return compilationErrorOutput; }
-            set { SetProperty(ref compilationErrorOutput, value); }
+            get { return _compilationErrorOutput; }
+            set { SetProperty(ref _compilationErrorOutput, value); }
+        }
+
+        private string _isRunTestOk;
+        public string IsRunTestOk
+        {
+            get { return _isRunTestOk; }
+            set { SetProperty(ref _isRunTestOk, value); }
+        }
+
+        private string _isCompilationTestOk;
+        public string IsCompilationTestOk
+        {
+            get { return _isCompilationTestOk; }
+            set { SetProperty(ref _isCompilationTestOk, value); }
         }
 
     }
