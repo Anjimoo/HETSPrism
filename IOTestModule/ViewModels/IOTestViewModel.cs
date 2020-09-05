@@ -97,7 +97,7 @@ namespace IOTestModule.ViewModels
         //called on Start Test click
         private void ExecuteStartTest()
         {
-           Services.RunTest.StartRunTest(_homeExercises, InputOutputModels);
+           Services.RunTest.StartRunTest(_homeExercises, InputOutputModels, CheckCompatibility);
             // change view to ResultsView and publish changes in _homeExercises
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
