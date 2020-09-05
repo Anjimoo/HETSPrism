@@ -32,7 +32,7 @@
                         Padding="5" Command="{Binding AddIOFiles}"/>
                 <Button Grid.Column="0" Grid.Row="4" Content="Add Output File" FontSize="20" Margin="5" 
                         Padding="5" Command="{Binding AddOutputFile}"/>
-                <ProgressBar  Grid.Row="5" Grid.Column="0"  Height="20" Margin="5" VerticalAlignment="Top" />
+                <ProgressBar  Grid.Row="5" Grid.Column="0"  Height="20" Margin="5" VerticalAlignment="Top" Value="{Binding TestRunPercentage}"/>
                 <Button Grid.Column="0" Grid.Row="6" Content="Start Test" FontSize="20" VerticalAlignment="Bottom" 
                         Padding="5" Margin="5" Command="{Binding StartTest}"/>
 

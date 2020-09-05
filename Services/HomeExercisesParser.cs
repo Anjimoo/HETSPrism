@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using System.Windows.Automation.Peers;
 
 namespace HETSPrism.Services
 {

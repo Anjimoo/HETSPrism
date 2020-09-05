@@ -1,18 +1,15 @@
 ﻿using DataBuilders;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Windows;
+using System.Threading.Tasks;
 
 namespace HETSPrism.Services
 {
     public static class CompilationTest
     {
 
-        public static string StartCompilationTest(ObservableCollection<HomeExercise> homeExercises)
+        public static async Task<string> StartCompilationTest(ObservableCollection<HomeExercise> homeExercises)
         {
             foreach(var homeExercise in homeExercises)
             {
@@ -36,7 +33,7 @@ namespace HETSPrism.Services
                 }
 
                 StreamReader se = process.StandardError;
-                homeExercise.CompilationErrorOutput = se.ReadToEnd();
+                homeExercise.CompilationErrorOutput = await se.ReadToEndAsync();
                 if (homeExercise.CompilationErrorOutput != "")
                 {
                     homeExercise.IsCompilationTestOk = "No";

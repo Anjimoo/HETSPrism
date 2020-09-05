@@ -1,18 +1,11 @@
 ﻿using Prism.Mvvm;
 using Prism.Commands;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography;
 using Prism.Regions;
-using Microsoft.Win32;
-using System.IO;
 using HETSPrism.Services;
-using System.Windows.Forms;
 using Prism.Events;
 using DataBuilders;
-using Prism.Common;
-using System.Collections.ObjectModel;
+
 
 namespace HETSPrism.ViewModels
 {
@@ -84,15 +77,28 @@ namespace HETSPrism.ViewModels
         }
 
         //called when Compilation Test clicked
-        private void ExecuteCompilationTest(string uri)
+        private async void ExecuteCompilationTest(string uri)
         {
-            string message = Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
-            if(message != "OK")
+            try
             {
-                _dialogService.ShowMessageBox(message);
+                CanTest = false;
+                string message = await Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
+                if (message != "OK")
+                {
+                    _dialogService.ShowMessageBox(message);
+                }
+
+                _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(parser.HomeExercises);
+                _regionManager.RequestNavigate("ContentRegion", uri);
             }
-            _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(parser.HomeExercises);
-            _regionManager.RequestNavigate("ContentRegion", uri);
+            catch (Exception e)
+            {
+                _dialogService.ShowMessageBox(e.Message);
+            }
+            finally
+            {
+                CanTest = true;
+            }
         }
 
         //called when Run I/O Test clicked

@@ -1,39 +1,30 @@
 ﻿using DataBuilders;
-using IOTestModule.Services;
-using Microsoft.Win32;
-using Prism.Commands;
-using Prism.Common;
-using Prism.Events;
-using Prism.Mvvm;
-using Prism.Regions;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
-using System.Windows.Controls.Ribbon;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
 using System.Globalization;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+
 
 namespace IOTestModule.Services
 {
     public static class RunTest
     {
-        public static void StartRunTest(ObservableCollection<HomeExercise> _homeExercises, ObservableCollection<InputOutputModel> InputOutputModels)
+        public static async Task StartRunTest(IReadOnlyList<HomeExercise> homeExercises,
+            IReadOnlyList<InputOutputModel> inputOutputModels, IProgress<double> progress=null)
         {
-            foreach (var homeExercise in _homeExercises)
+            for (var index = 0; index < homeExercises.Count; index++)
             {
-                homeExercise.CompatibleRunTestList = new List<string>();              
-                for (int i = 0; i < InputOutputModels.Count; i++)
+                var homeExercise = homeExercises[index];
+                homeExercise.CompatibleRunTestList = new List<string>();
+                foreach (var inputOutputModel in inputOutputModels)
                 {
                     Process process = new Process();
                     process.StartInfo.FileName = @"java.exe";
                     // arguments actually will not work if program does not need arguments and instead wants input in running time
-                    process.StartInfo.Arguments = $"{homeExercise.HomeExercisePath} < {InputOutputModels[i].InputTextFullPath }";
+                    process.StartInfo.Arguments =
+                        $"{homeExercise.HomeExercisePath} < {inputOutputModel.InputTextFullPath}";
                     //process.StartInfo.CreateNoWindow = true;
                     process.StartInfo.UseShellExecute = false;
                     process.StartInfo.CreateNoWindow = true;
@@ -49,16 +40,30 @@ namespace IOTestModule.Services
                     {
                         throw new InvalidCastException("Error: java.exe compiler not found in path variables", e);
                     }
+
                     // needed if java Program wants some enter input
                     using (StreamWriter sw = process.StandardInput)
                     {
-                        sw.Write(InputOutputModels[i].InputText);
+                        sw.Write(inputOutputModel.InputText);
                     }
+
                     // needed to see output from program
                     using (StreamReader srOutput = process.StandardOutput)
                     {
-                        homeExercise.RunTestOutput = srOutput.ReadToEnd();
+                        string output = null;
+                        var readOutputTask = Task.Run(() => { output = srOutput.ReadToEnd(); });
+                        await Task.WhenAny(readOutputTask, Task.Delay(TimeSpan.FromSeconds(5)));
+                        if (output == null)
+                        {
+                            homeExercise.RunTestErrorOutput = "Exercise didn't stopped after 5 seconds";
+                            process.Kill();
+                            progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
+                            continue;
+                        }
+
+                        homeExercise.RunTestOutput = output;
                     }
+
                     // needed to see errors from program
                     using (StreamReader srError = process.StandardError)
                     {
@@ -70,7 +75,8 @@ namespace IOTestModule.Services
                     }
 
                     //equal and ignore from symbols (white space etc...)
-                    if (String.Compare(InputOutputModels[i].OutputText, homeExercise.RunTestOutput, CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols)==0)
+                    if (String.Compare(inputOutputModel.OutputText, homeExercise.RunTestOutput,
+                        CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols) == 0)
                     {
                         //do something when the output's compatible 
                         homeExercise.CompatibleRunTestList.Add("compatible");
@@ -80,11 +86,11 @@ namespace IOTestModule.Services
                         //do something when the output's not compatible 
                         homeExercise.CompatibleRunTestList.Add("not compatible");
                     }
-
                 }
+
                 foreach (var compatibleRunTest in homeExercise.CompatibleRunTestList)
-                { 
-                    if(compatibleRunTest == "not compatible")
+                {
+                    if (compatibleRunTest == "not compatible")
                     {
                         homeExercise.IsCompatibleRunTest = "No";
                         break;
@@ -94,9 +100,8 @@ namespace IOTestModule.Services
                         homeExercise.IsCompatibleRunTest = "Yes";
                     }
                 }
-
+                progress?.Report(((double)(index+1)/homeExercises.Count) * 100);
             }
-
         }
     }
 }
