@@ -3,9 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UserSecretsId>e365c7cd-7208-4ea4-8b89-fe3f472927f5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.0.0" />
     <PackageReference Include="Prism.Wpf" Version="7.2.0.1422" />
   </ItemGroup>
 
