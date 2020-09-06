@@ -23,11 +23,11 @@ namespace IOTestModule.Services
 {
     public static class RunTest
     {
-        public static void StartRunTest(ObservableCollection<HomeExercise> _homeExercises, ObservableCollection<InputOutputModel> InputOutputModels,bool CheckCompatibility)
+        public static void StartRunTest(ObservableCollection<HomeExercise> _homeExercises, ObservableCollection<InputOutputModel> InputOutputModels)
         {
             foreach (var homeExercise in _homeExercises)
             {
-                homeExercise.compatibleRunTestList = new List<string>();              
+                homeExercise.CompatibleRunTestList = new List<string>();              
                 for (int i = 0; i < InputOutputModels.Count; i++)
                 {
                     Process process = new Process();
@@ -63,36 +63,39 @@ namespace IOTestModule.Services
                     using (StreamReader srError = process.StandardError)
                     {
                         homeExercise.RunTestErrorOutput = srError.ReadToEnd();
+                        if (homeExercise.RunTestErrorOutput != "")
+                        {
+                            homeExercise.IsRunTestOk = "No";
+                        }
                     }
 
-                        //equal and ignore from symbols (white space etc...)
-                        if (String.Compare(InputOutputModels[i].OutputText, homeExercise.RunTestOutput, CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols)==0)
+                    //equal and ignore from symbols (white space etc...)
+                    if (String.Compare(InputOutputModels[i].OutputText, homeExercise.RunTestOutput, CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols)==0)
                     {
-                        //do somthing when the output's compatiable 
-                        homeExercise.compatibleRunTestList.Add("compatible");
+                        //do something when the output's compatible 
+                        homeExercise.CompatibleRunTestList.Add("compatible");
                     }
                     else
                     {
-                        //do somthing when the output's not compatiable 
-                        homeExercise.compatibleRunTestList.Add("not compatible");
+                        //do something when the output's not compatible 
+                        homeExercise.CompatibleRunTestList.Add("not compatible");
                     }
-                        }
-                        foreach (var compatibleRunTest in homeExercise.compatibleRunTestList)
-                        {
-                            if(compatibleRunTest == "not compatible")
-                            {
-                                homeExercise.IsCompatibleRunTest = false;
-                                break;
-                            }
-                            else
-                            {
-                                homeExercise.IsCompatibleRunTest = true;
-                            }
-                         }
-                    
-
 
                 }
+                foreach (var compatibleRunTest in homeExercise.CompatibleRunTestList)
+                { 
+                    if(compatibleRunTest == "not compatible")
+                    {
+                        homeExercise.IsCompatibleRunTest = "No";
+                        break;
+                    }
+                    else
+                    {
+                        homeExercise.IsCompatibleRunTest = "Yes";
+                    }
+                }
+
+            }
 
         }
     }

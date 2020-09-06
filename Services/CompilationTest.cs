@@ -37,7 +37,14 @@ namespace HETSPrism.Services
 
                 StreamReader se = process.StandardError;
                 homeExercise.CompilationErrorOutput = se.ReadToEnd();
-
+                if (homeExercise.CompilationErrorOutput != "")
+                {
+                    homeExercise.IsCompilationTestOk = "No";
+                }
+                else
+                {
+                    homeExercise.IsCompilationTestOk = "Yes";
+                }
             }
             return "OK";
         }

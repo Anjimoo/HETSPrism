@@ -29,9 +29,9 @@
                           AutoGenerateColumns="False" ItemsSource="{Binding HomeExercises, Mode=TwoWay}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="HW Name" Binding="{Binding HomeExerciseName, Mode=TwoWay}" Width="0.25*"/>
-                        <DataGridTextColumn Header="Compilation Test" Width="0.25*" Binding="{Binding CompilationOutput, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Run Test" Width="0.25*"/>
-                        <DataGridTextColumn Header="I/O Test" Width="0.25*"/>
+                        <DataGridTextColumn Header="Compilation Test" Width="0.25*" Binding="{Binding IsCompilationTestOk, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Run Test" Width="0.25*" Binding="{Binding IsRunTestOk, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="I/O Test" Width="0.25*" Binding="{Binding IsCompatibleRunTest, Mode=TwoWay}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <Button Grid.Row="3" Grid.Column="0" VerticalAlignment="Bottom" Content="Export to Excel" Margin="5" FontSize="20" 

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using DataBuilders;
+using CsvHelper;
 
 namespace ResultsModule.Models
 {
@@ -17,14 +19,24 @@ namespace ResultsModule.Models
             string csvFiles = $"{dataDir}\\HomeExerciseReport.csv";
 
             // create a table and export to csv file
-            StringBuilder csvcontent = new StringBuilder();
-            csvcontent.AppendLine("homeExercisePath,homeExerciseName,compilationOutput,compilationErrorOutput");
-            foreach (var homeExercise in homeExercises)
+            //StringBuilder csvcontent = new StringBuilder();
+            //csvcontent.AppendLine("Home Exercise Path, Home Exercise Name, Passed Compilation Test, " +
+            //                      "Compilation Error Output, Passed Run Test, Passed I/O Test, Run Test Output, " +
+            //                      "Run Test Error");
+            //foreach (var homeExercise in homeExercises)
+            //{
+            //    csvcontent.AppendLine($"{homeExercise.HomeExercisePath}, {homeExercise.HomeExerciseName}, " +
+            //                          $"{homeExercise.IsCompilationTestOk}, {homeExercise.CompilationErrorOutput}, " +
+            //                          $"{homeExercise.IsRunTestOk}, {homeExercise.IsCompatibleRunTest}, " +
+            //                          $"{homeExercise.RunTestOutput}, {homeExercise.RunTestErrorOutput}");
+            //}
+
+            //File.AppendAllText(csvFiles, csvcontent.ToString());
+            using (var writer = new StreamWriter(csvFiles))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
-                csvcontent.AppendLine($"{homeExercise.HomeExercisePath}, {homeExercise.HomeExerciseName}, {homeExercise.CompilationOutput},{homeExercise.CompilationErrorOutput}");      
+                csv.WriteRecords(homeExercises);
             }
-          
-             File.AppendAllText(csvFiles, csvcontent.ToString());
         }
 
     }

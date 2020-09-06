@@ -23,31 +23,21 @@ namespace IOTestModule.ViewModels
 {
     public class IOTestViewModel : BindableBase
     {
-        private IEventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IRegionManager _regionManager;
         public DelegateCommand StartTest { get; set; }
         public DelegateCommand AddIOFiles { get; set; }
         public DelegateCommand<InputOutputModel> AddOutputFile { get; set; }
+        public ObservableCollection<InputOutputModel> InputOutputModels { get; set; }
 
         private ObservableCollection<HomeExercise> _homeExercises;
-
-        private IRegionManager _regionManager;
-        
-        private bool _checkCompatibility;
-        public bool CheckCompatibility
-        {
-            get { return _checkCompatibility; }
-            set { SetProperty(ref _checkCompatibility, value); }
-        }
-
-        public ObservableCollection<InputOutputModel> InputOutputModels { get; set; }
 
         public IOTestViewModel(IEventAggregator eventAggregator, IRegionManager regionManager)
         {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Subscribe(UpdatedHomeExercises);
-            StartTest = new DelegateCommand(ExecuteStartTest, CanExecuteStartTest)
-                .ObservesProperty(() => CheckCompatibility);
+            StartTest = new DelegateCommand(ExecuteStartTest);
             AddIOFiles = new DelegateCommand(ExecuteAddIOFiles);
             AddOutputFile = new DelegateCommand<InputOutputModel>(ExecuteAddOutputFile);
             InputOutputModels = new ObservableCollection<InputOutputModel>();
@@ -80,18 +70,13 @@ namespace IOTestModule.ViewModels
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
             {
-                var tempIOModel = new InputOutputModel {
-                    InputTextFullPath = System.IO.Path.GetFullPath(openFileDialog.FileName)
-                ,
+                var tempIOModel = new InputOutputModel
+                {
+                    InputTextFullPath = System.IO.Path.GetFullPath(openFileDialog.FileName),
                     InputText = InputOutputParser.Parser(openFileDialog.FileName)
                 };
-                ExecuteAddOutputFile(tempIOModel);
+                    ExecuteAddOutputFile(tempIOModel);
             }
-        }
-
-        private bool CanExecuteStartTest()
-        {
-            return CheckCompatibility;
         }
 
         //called on Start Test click
@@ -101,12 +86,6 @@ namespace IOTestModule.ViewModels
             // change view to ResultsView and publish changes in _homeExercises
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
             _regionManager.RequestNavigate("ContentRegion", "ResultsView");
-        }
-
-        //get parameters from another screen
-        public void DataReceived(object sender, DataReceivedEventArgs e)
-        {
-
         }
 
         private void UpdatedHomeExercises(ObservableCollection<HomeExercise> homeExercises)
