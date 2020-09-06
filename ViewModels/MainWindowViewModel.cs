@@ -22,6 +22,7 @@ namespace HETSPrism.ViewModels
         private readonly IRegionManager _regionManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDialogService _dialogService;
+        private readonly IProgress<double> _runTestProgress;
         private bool _canTest;
         private bool _passed;
         public bool CanTest
@@ -35,9 +36,18 @@ namespace HETSPrism.ViewModels
             set { SetProperty(ref _folderPath, value); }
         }
 
+        private double _progressBarPercentage;
+        public double ProgressBarPercentage
+        {
+            get { return _progressBarPercentage; }
+            set { SetProperty(ref _progressBarPercentage, value); }
+        }
+
         public MainWindowViewModel(IRegionManager regionManager, IEventAggregator eventAggregator,
             IDialogService dialogService)
         {
+            _runTestProgress = new Progress<double>(
+                (index) => { ProgressBarPercentage = index; });
             ImportHomeExercise = new DelegateCommand(ExecuteImportHomeExercise);
             CompilationTest = new DelegateCommand<string>(ExecuteCompilationTest)
                 .ObservesCanExecute(() => CanTest);
@@ -82,7 +92,7 @@ namespace HETSPrism.ViewModels
             try
             {
                 CanTest = false;
-                string message = await Services.CompilationTest.StartCompilationTest(parser.HomeExercises);
+                string message = await Services.CompilationTest.StartCompilationTest(parser.HomeExercises, _runTestProgress);
                 if (message != "OK")
                 {
                     _dialogService.ShowMessageBox(message);
@@ -98,6 +108,7 @@ namespace HETSPrism.ViewModels
             finally
             {
                 CanTest = true;
+                ProgressBarPercentage = 0;
             }
         }
 

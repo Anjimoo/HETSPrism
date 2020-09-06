@@ -15,7 +15,8 @@
             <ColumnDefinition MinWidth="500"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="88.6"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -27,7 +28,7 @@
         <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" Margin="10" Padding="2" Text="{Binding FolderPath, Mode=TwoWay}"
                  TextAlignment="Left" Grid.ColumnSpan="1"/>
         <!--Row 2-->
-        <ContentControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" prism:RegionManager.RegionName="ContentRegion"/>
+        <ContentControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="5" prism:RegionManager.RegionName="ContentRegion"/>
         <Button x:Name="CompilationTest" Grid.Row="1" Background="Azure" Grid.Column="0" Margin="10,10,10,10" Command="{Binding CompilationTest}" 
                 Content="Start compilation Test" Padding="20" FontSize="20" CommandParameter="ResultsView"/>
         <!--Row 3-->
@@ -36,7 +37,8 @@
         <!--Row 4-->
         <Button Grid.Row="3" Grid.Column="0" Background="Azure" Content="Results" Command="{Binding ShowResults}"
                 CommandParameter="ResultsView" Margin="10" Padding="20" FontSize="20"/>
-
+        <!--Row 5-->
+        <ProgressBar Grid.Row="4" Grid.Column="0" Margin="10" Height="30" Padding="20" Value="{Binding ProgressBarPercentage}"></ProgressBar>
 
     </Grid>
 </Window>

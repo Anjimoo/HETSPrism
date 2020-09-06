@@ -1,4 +1,6 @@
-﻿using DataBuilders;
+﻿using System;
+using System.Collections.Generic;
+using DataBuilders;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -9,11 +11,11 @@ namespace HETSPrism.Services
     public static class CompilationTest
     {
 
-        public static async Task<string> StartCompilationTest(ObservableCollection<HomeExercise> homeExercises)
+        public static async Task<string> StartCompilationTest(IReadOnlyList<HomeExercise> homeExercises, IProgress<double> progress)
         {
-            foreach(var homeExercise in homeExercises)
+            for (var index = 0; index < homeExercises.Count; index++)
             {
-                
+                var homeExercise = homeExercises[index];
                 // definition of process
                 Process process = new Process();
                 process.StartInfo.FileName = "javac.exe";
@@ -42,7 +44,9 @@ namespace HETSPrism.Services
                 {
                     homeExercise.IsCompilationTestOk = "Yes";
                 }
+                progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
             }
+
             return "OK";
         }
     }
