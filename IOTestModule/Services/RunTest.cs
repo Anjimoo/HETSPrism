@@ -12,7 +12,7 @@ namespace IOTestModule.Services
     public static class RunTest
     {
         public static async Task StartRunTest(IReadOnlyList<HomeExercise> homeExercises,
-            IReadOnlyList<InputOutputModel> inputOutputModels, IProgress<double> progress=null)
+            IReadOnlyList<InputOutputModel> inputOutputModels, int numberOfSecondsToWait, IProgress<double> progress=null)
         {
             for (var index = 0; index < homeExercises.Count; index++)
             {
@@ -52,15 +52,14 @@ namespace IOTestModule.Services
                     {
                         string output = null;
                         var readOutputTask = Task.Run(() => { output = srOutput.ReadToEnd(); });
-                        await Task.WhenAny(readOutputTask, Task.Delay(TimeSpan.FromSeconds(5)));
+                        await Task.WhenAny(readOutputTask, Task.Delay(TimeSpan.FromSeconds(numberOfSecondsToWait)));
                         if (output == null)
                         {
-                            homeExercise.RunTestErrorOutput = "Exercise didn't stopped after 5 seconds";
+                            homeExercise.RunTestErrorOutput = $"Exercise didn't stopped after {numberOfSecondsToWait} seconds";
                             process.Kill();
                             progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
                             continue;
                         }
-
                         homeExercise.RunTestOutput = output;
                     }
 
@@ -74,33 +73,43 @@ namespace IOTestModule.Services
                         }
                     }
 
-                    //equal and ignore from symbols (white space etc...)
-                    if (String.Compare(inputOutputModel.OutputText, homeExercise.RunTestOutput,
-                        CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols) == 0)
-                    {
-                        //do something when the output's compatible 
-                        homeExercise.CompatibleRunTestList.Add("compatible");
-                    }
-                    else
-                    {
-                        //do something when the output's not compatible 
-                        homeExercise.CompatibleRunTestList.Add("not compatible");
-                    }
+                    CompareOutputs(inputOutputModel, homeExercise);
                 }
 
-                foreach (var compatibleRunTest in homeExercise.CompatibleRunTestList)
-                {
-                    if (compatibleRunTest == "not compatible")
-                    {
-                        homeExercise.IsCompatibleRunTest = "No";
-                        break;
-                    }
-                    else
-                    {
-                        homeExercise.IsCompatibleRunTest = "Yes";
-                    }
-                }
+                CompatibleChecker(homeExercise);
                 progress?.Report(((double)(index+1)/homeExercises.Count) * 100);
+            }
+        }
+
+        private static void CompareOutputs(InputOutputModel inputOutputModel, HomeExercise homeExercise)
+        {
+            //equal and ignore from symbols (white space etc...)
+            if (String.Compare(inputOutputModel.OutputText, homeExercise.RunTestOutput,
+                CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols) == 0)
+            {
+                //do something when the output's compatible 
+                homeExercise.CompatibleRunTestList.Add("compatible");
+            }
+            else
+            {
+                //do something when the output's not compatible 
+                homeExercise.CompatibleRunTestList.Add("not compatible");
+            }
+        }
+
+        private static void CompatibleChecker(HomeExercise homeExercise)
+        {
+            foreach (var compatibleRunTest in homeExercise.CompatibleRunTestList)
+            {
+                if (compatibleRunTest == "not compatible")
+                {
+                    homeExercise.IsCompatibleRunTest = "No";
+                    break;
+                }
+                else
+                {
+                    homeExercise.IsCompatibleRunTest = "Yes";
+                }
             }
         }
     }

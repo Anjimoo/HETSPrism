@@ -27,6 +27,13 @@ namespace IOTestModule.ViewModels
             set { SetProperty(ref _canStartTest, value); }
         }
 
+        private int _numberOfSecondsToWait;
+        public int NumberOfSecondsToWait
+        {
+            get { return _numberOfSecondsToWait; }
+            set { SetProperty(ref _numberOfSecondsToWait, value); }
+        }
+
         private double _testRunPercentage;
         public double TestRunPercentage
         {
@@ -95,7 +102,7 @@ namespace IOTestModule.ViewModels
             try
             {
                 CanStartTest = false;
-                await RunTest.StartRunTest(_homeExercises, InputOutputModels, _runTestProgress);
+                await RunTest.StartRunTest(_homeExercises, InputOutputModels, NumberOfSecondsToWait, _runTestProgress);
                 // change view to ResultsView and publish changes in _homeExercises
                 _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
                 _regionManager.RequestNavigate("ContentRegion", "ResultsView");

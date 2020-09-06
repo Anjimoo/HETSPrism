@@ -113,7 +113,7 @@ namespace HETSPrism.Services
         {
             string fileID = new DirectoryInfo(Path.GetDirectoryName(fileName)).Name;
             var homeExercise = new HomeExercise()
-            { HomeExercisePath = fileName, HomeExerciseName = fileID};
+            { HomeExercisePath = fileName, HomeExerciseFolderName = fileID};
             HomeExercises.Add(homeExercise);
         }
 

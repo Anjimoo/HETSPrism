@@ -1,25 +1,22 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Windows;
-using System.Collections.ObjectModel;
-using System.Windows.Documents;
 using System.Collections.Generic;
 namespace DataBuilders
 {
     public class HomeExercise : BindableBase
     {
         private string _homeExercisePath;
+        
         public string HomeExercisePath
         {
             get { return _homeExercisePath; }
             set { SetProperty(ref _homeExercisePath, value); }
         }
 
-        private string _homeExerciseName;
-        public string HomeExerciseName
+        private string _homeExerciseFolderName;
+        public string HomeExerciseFolderName
         {
-            get { return _homeExerciseName; }
-            set { SetProperty(ref _homeExerciseName, value); }
+            get { return _homeExerciseFolderName; }
+            set { SetProperty(ref _homeExerciseFolderName, value); }
         }
 
         private string _runTestOutput;
