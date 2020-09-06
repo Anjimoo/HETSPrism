@@ -34,7 +34,6 @@
                         Padding="5" Command="{Binding AddOutputFile}"/>
                 <TextBox Grid.Row="5" Grid.Column="0" Margin="5" Padding="5" Text="{Binding Path=NumberOfSecondsToWait, Mode=TwoWay}"
                          ToolTip="Number of seconds to wait until closing home exercise"></TextBox>
-                <ProgressBar  Grid.Row="6" Grid.Column="0"  Height="20" Padding="5" Margin="5" VerticalAlignment="Top" Value="{Binding TestRunPercentage}"/>
                 <Button Grid.Column="0" Grid.Row="6" Content="Start Test" FontSize="20" VerticalAlignment="Bottom" 
                         Padding="5" Margin="5" Command="{Binding StartTest}"/>
 
