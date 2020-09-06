@@ -11,7 +11,7 @@ namespace HETSPrism.Services
     public static class CompilationTest
     {
 
-        public static async Task<string> StartCompilationTest(IReadOnlyList<HomeExercise> homeExercises, IProgress<double> progress)
+        public static async Task<string> StartCompilationTest(IReadOnlyList<HomeExercise> homeExercises, IProgress<double> progress=null)
         {
             for (var index = 0; index < homeExercises.Count; index++)
             {
@@ -38,11 +38,11 @@ namespace HETSPrism.Services
                 homeExercise.CompilationErrorOutput = await se.ReadToEndAsync();
                 if (homeExercise.CompilationErrorOutput != "")
                 {
-                    homeExercise.IsCompilationTestOk = "No";
+                    homeExercise.IsCompilationTestOk = "Has Error";
                 }
                 else
                 {
-                    homeExercise.IsCompilationTestOk = "Yes";
+                    homeExercise.IsCompilationTestOk = "Success";
                 }
                 progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
             }

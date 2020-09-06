@@ -6,11 +6,7 @@ namespace DataBuilders
     {
         private string _homeExercisePath;
         
-        public string HomeExercisePath
-        {
-            get { return _homeExercisePath; }
-            set { SetProperty(ref _homeExercisePath, value); }
-        }
+        public string HomeExercisePath { get; set; }
 
         private string _homeExerciseFolderName;
         public string HomeExerciseFolderName
@@ -20,11 +16,8 @@ namespace DataBuilders
         }
 
         private string _runTestOutput;
-        public string RunTestOutput
-        {
-            get { return _runTestOutput; }
-            set { SetProperty(ref _runTestOutput, value); }
-        }
+        public string RunTestOutput { get; set; }
+
         public List<string> CompatibleRunTestList { get; set; }
 
         private string _isCompatibleRunTest;
@@ -35,18 +28,10 @@ namespace DataBuilders
         }
 
         private string _runTestErrorOutput;
-        public string RunTestErrorOutput
-        {
-            get { return _runTestErrorOutput; }
-            set { SetProperty(ref _runTestErrorOutput, value); } 
-        }
+        public string RunTestErrorOutput { get; set; }
 
         private string _compilationErrorOutput;
-        public string CompilationErrorOutput
-        {
-            get { return _compilationErrorOutput; }
-            set { SetProperty(ref _compilationErrorOutput, value); }
-        }
+        public string CompilationErrorOutput { get; set; }
 
         private string _isRunTestOk;
         public string IsRunTestOk

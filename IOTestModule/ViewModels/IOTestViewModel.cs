@@ -7,6 +7,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 
 
@@ -30,7 +31,11 @@ namespace IOTestModule.ViewModels
         public int NumberOfSecondsToWait
         {
             get { return _numberOfSecondsToWait; }
-            set { SetProperty(ref _numberOfSecondsToWait, value); }
+            set
+            {
+                if (value > 500) {value = 500; MessageBox.Show("Value is more then 500"); }
+                SetProperty(ref _numberOfSecondsToWait, value);
+            }
         }
 
         public DelegateCommand<InputOutputModel> AddOutputFile { get; set; }
@@ -40,16 +45,29 @@ namespace IOTestModule.ViewModels
 
         public IOTestViewModel(IEventAggregator eventAggregator, IRegionManager regionManager)
         {
-            CanStartTest = true;
+            CanStartTest = false;
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Subscribe(UpdatedHomeExercises);
-            StartTest = new DelegateCommand(ExecuteStartTest)
-                .ObservesCanExecute(() => CanStartTest);
+            StartTest = new DelegateCommand(ExecuteStartTest, CanExecuteStartTest)
+                .ObservesProperty(() => NumberOfSecondsToWait);
             AddIOFiles = new DelegateCommand(ExecuteAddIOFiles);
             AddOutputFile = new DelegateCommand<InputOutputModel>(ExecuteAddOutputFile);
             InputOutputModels = new ObservableCollection<InputOutputModel>();
             _homeExercises = new ObservableCollection<HomeExercise>();
+        }
+
+        private bool CanExecuteStartTest()
+        {
+            if (NumberOfSecondsToWait > 0)
+            {
+                CanStartTest = true;
+            }
+            else
+            {
+                return false;
+            }
+            return CanStartTest;
         }
 
         //called on Add Output File click
