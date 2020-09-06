@@ -16,7 +16,6 @@ namespace IOTestModule.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
-        private readonly IProgress<double> _runTestProgress;
         public DelegateCommand StartTest { get; set; }
         public DelegateCommand AddIOFiles { get; set; }
 
@@ -34,12 +33,6 @@ namespace IOTestModule.ViewModels
             set { SetProperty(ref _numberOfSecondsToWait, value); }
         }
 
-        private double _testRunPercentage;
-        public double TestRunPercentage
-        {
-            get { return _testRunPercentage; }
-            set { SetProperty(ref _testRunPercentage, value); }
-        }
         public DelegateCommand<InputOutputModel> AddOutputFile { get; set; }
         public ObservableCollection<InputOutputModel> InputOutputModels { get; set; }
 
@@ -47,8 +40,6 @@ namespace IOTestModule.ViewModels
 
         public IOTestViewModel(IEventAggregator eventAggregator, IRegionManager regionManager)
         {
-            _runTestProgress = new Progress<double>(
-                (index) => { TestRunPercentage = index;});
             CanStartTest = true;
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
@@ -102,7 +93,8 @@ namespace IOTestModule.ViewModels
             try
             {
                 CanStartTest = false;
-                await RunTest.StartRunTest(_homeExercises, InputOutputModels, NumberOfSecondsToWait, _runTestProgress);
+                await RunTest.StartRunTest(_homeExercises, InputOutputModels, NumberOfSecondsToWait, 
+                    _eventAggregator);
                 // change view to ResultsView and publish changes in _homeExercises
                 _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
                 _regionManager.RequestNavigate("ContentRegion", "ResultsView");
@@ -114,6 +106,7 @@ namespace IOTestModule.ViewModels
             finally
             {
                 CanStartTest = true;
+                _eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(0);
             }
         }
 

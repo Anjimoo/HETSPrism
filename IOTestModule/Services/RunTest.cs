@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Globalization;
 using System.Threading.Tasks;
+using Prism.Events;
 
 
 namespace IOTestModule.Services
@@ -12,7 +13,7 @@ namespace IOTestModule.Services
     public static class RunTest
     {
         public static async Task StartRunTest(IReadOnlyList<HomeExercise> homeExercises,
-            IReadOnlyList<InputOutputModel> inputOutputModels, int numberOfSecondsToWait, IProgress<double> progress=null)
+            IReadOnlyList<InputOutputModel> inputOutputModels, int numberOfSecondsToWait, IEventAggregator _eventAggregator)
         {
             for (var index = 0; index < homeExercises.Count; index++)
             {
@@ -57,7 +58,8 @@ namespace IOTestModule.Services
                         {
                             homeExercise.RunTestErrorOutput = $"Exercise didn't stopped after {numberOfSecondsToWait} seconds";
                             process.Kill();
-                            progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
+                            _eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
+                            //progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
                             continue;
                         }
                         homeExercise.RunTestOutput = output;
@@ -77,7 +79,8 @@ namespace IOTestModule.Services
                 }
 
                 CompatibleChecker(homeExercise);
-                progress?.Report(((double)(index+1)/homeExercises.Count) * 100);
+                _eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
+                //progress?.Report(((double)(index+1)/homeExercises.Count) * 100);
             }
         }
 

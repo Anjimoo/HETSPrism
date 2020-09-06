@@ -46,6 +46,7 @@ namespace HETSPrism.ViewModels
         public MainWindowViewModel(IRegionManager regionManager, IEventAggregator eventAggregator,
             IDialogService dialogService)
         {
+
             _runTestProgress = new Progress<double>(
                 (index) => { ProgressBarPercentage = index; });
             ImportHomeExercise = new DelegateCommand(ExecuteImportHomeExercise);
@@ -59,8 +60,14 @@ namespace HETSPrism.ViewModels
             _dialogService = dialogService;
             CanTest = false;
             _passed = false;
+            _eventAggregator.GetEvent<UpdateProgressBarEvent>().Subscribe(UpdatedProgressBar);
         }
-        
+
+        private void UpdatedProgressBar(double obj)
+        {
+            ProgressBarPercentage = obj;
+        }
+
         // called when Import Home Exercise clicked
         void ExecuteImportHomeExercise()
         {
@@ -76,7 +83,7 @@ namespace HETSPrism.ViewModels
 
             if (parser != null && parser.HomeExercises.Count > 0)
             {
-                FolderPath = $"\nSuccesfully imported {parser.HomeExercises.Count} Home Exercises";
+                FolderPath = $"\nSuccessful imported {parser.HomeExercises.Count} Home Exercises";
                 _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(parser.HomeExercises);
                 CanTest = true;
             }
