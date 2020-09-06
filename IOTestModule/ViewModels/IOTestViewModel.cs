@@ -2,21 +2,12 @@
 using IOTestModule.Services;
 using Microsoft.Win32;
 using Prism.Commands;
-using Prism.Common;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
-using System.Windows.Controls.Ribbon;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
-using IOTestModule.Views;
-using System.Threading.Tasks;
 
 
 namespace IOTestModule.ViewModels
@@ -25,8 +16,23 @@ namespace IOTestModule.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
+        private readonly IProgress<double> _runTestProgress;
         public DelegateCommand StartTest { get; set; }
         public DelegateCommand AddIOFiles { get; set; }
+
+        private bool _canStartTest;
+        public bool CanStartTest
+        {
+            get { return _canStartTest; }
+            set { SetProperty(ref _canStartTest, value); }
+        }
+
+        private double _testRunPercentage;
+        public double TestRunPercentage
+        {
+            get { return _testRunPercentage; }
+            set { SetProperty(ref _testRunPercentage, value); }
+        }
         public DelegateCommand<InputOutputModel> AddOutputFile { get; set; }
         public ObservableCollection<InputOutputModel> InputOutputModels { get; set; }
 
@@ -34,10 +40,14 @@ namespace IOTestModule.ViewModels
 
         public IOTestViewModel(IEventAggregator eventAggregator, IRegionManager regionManager)
         {
+            _runTestProgress = new Progress<double>(
+                (index) => { TestRunPercentage = index;});
+            CanStartTest = true;
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Subscribe(UpdatedHomeExercises);
-            StartTest = new DelegateCommand(ExecuteStartTest);
+            StartTest = new DelegateCommand(ExecuteStartTest)
+                .ObservesCanExecute(() => CanStartTest);
             AddIOFiles = new DelegateCommand(ExecuteAddIOFiles);
             AddOutputFile = new DelegateCommand<InputOutputModel>(ExecuteAddOutputFile);
             InputOutputModels = new ObservableCollection<InputOutputModel>();
@@ -80,12 +90,24 @@ namespace IOTestModule.ViewModels
         }
 
         //called on Start Test click
-        private void ExecuteStartTest()
+        private async void ExecuteStartTest()
         {
-           Services.RunTest.StartRunTest(_homeExercises, InputOutputModels, CheckCompatibility);
-            // change view to ResultsView and publish changes in _homeExercises
-            _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
-            _regionManager.RequestNavigate("ContentRegion", "ResultsView");
+            try
+            {
+                CanStartTest = false;
+                await RunTest.StartRunTest(_homeExercises, InputOutputModels, _runTestProgress);
+                // change view to ResultsView and publish changes in _homeExercises
+                _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Publish(_homeExercises);
+                _regionManager.RequestNavigate("ContentRegion", "ResultsView");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                CanStartTest = true;
+            }
         }
 
         private void UpdatedHomeExercises(ObservableCollection<HomeExercise> homeExercises)
