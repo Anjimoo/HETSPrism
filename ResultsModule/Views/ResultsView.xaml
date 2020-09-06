@@ -28,7 +28,7 @@
                 <DataGrid Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Margin="5" Background="AliceBlue" 
                           AutoGenerateColumns="False" ItemsSource="{Binding HomeExercises, Mode=TwoWay}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="HW Name" Binding="{Binding HomeExerciseName, Mode=TwoWay}" Width="0.25*"/>
+                        <DataGridTextColumn Header="HW Name" Binding="{Binding HomeExerciseFolderName, Mode=TwoWay}" Width="0.25*"/>
                         <DataGridTextColumn Header="Compilation Test" Width="0.25*" Binding="{Binding IsCompilationTestOk, Mode=TwoWay}"/>
                         <DataGridTextColumn Header="Run Test" Width="0.25*" Binding="{Binding IsRunTestOk, Mode=TwoWay}"/>
                         <DataGridTextColumn Header="I/O Test" Width="0.25*" Binding="{Binding IsCompatibleRunTest, Mode=TwoWay}"/>

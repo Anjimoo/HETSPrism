@@ -25,7 +25,7 @@ namespace ResultsModule.Models
             //                      "Run Test Error");
             //foreach (var homeExercise in homeExercises)
             //{
-            //    csvcontent.AppendLine($"{homeExercise.HomeExercisePath}, {homeExercise.HomeExerciseName}, " +
+            //    csvcontent.AppendLine($"{homeExercise.HomeExercisePath}, {homeExercise.HomeExerciseFolderName}, " +
             //                          $"{homeExercise.IsCompilationTestOk}, {homeExercise.CompilationErrorOutput}, " +
             //                          $"{homeExercise.IsRunTestOk}, {homeExercise.IsCompatibleRunTest}, " +
             //                          $"{homeExercise.RunTestOutput}, {homeExercise.RunTestErrorOutput}");
