@@ -10,7 +10,7 @@ namespace ResultsModuleTests
     public class ExportToExcelTests
     {
         [Fact]
-        public void ToCsvTests()
+        public void ToCsvSuccessTests()
         {
             //Arrange
             string AppPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);

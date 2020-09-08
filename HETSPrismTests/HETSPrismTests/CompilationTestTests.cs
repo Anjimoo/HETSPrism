@@ -15,15 +15,12 @@ namespace HETSPrismTests
         {
             //Arrange
             HomeExercise homeExercise1 = new HomeExercise(){HomeExercisePath = @"C:\Users\anton\Desktop\HETS.Project\Matala3\JavaExercises\Exc1\excercise1\_495418_assignsubmission_file_\ArithmeticApp.java" };
-            HomeExercise homeExercise2 = new HomeExercise(){HomeExercisePath = @"C:\Users\anton\Desktop\HETS.Project\Matala3\JavaExercises\Exc1\excercise1\_495401_assignsubmission_file_\ArithmeticApp.java" };
             List<HomeExercise> homeExercises = new List<HomeExercise>();
             homeExercises.Add(homeExercise1);
-            homeExercises.Add(homeExercise2);
             //Act
             await CompilationTest.StartCompilationTest(homeExercises);
             //Assert
             Assert.True(File.Exists(@"C:\Users\anton\Desktop\HETS.Project\Matala3\JavaExercises\Exc1\excercise1\_495401_assignsubmission_file_\ArithmeticApp.class"));
-            Assert.True(File.Exists(@"C:\Users\anton\Desktop\HETS.Project\Matala3\JavaExercises\Exc1\excercise1\_495418_assignsubmission_file_\ArithmeticApp.class"));
         }
 
         [Fact]
