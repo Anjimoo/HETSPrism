@@ -22,32 +22,46 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Input/Output Test" FontSize="26" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Grid.Row="0"/>
-                <TextBlock Text="Added test cases" FontSize="20" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="1" Margin="5"/>
-                <Button Grid.Column="0" Grid.Row="3" Content="Add I/O Files" FontSize="20" Margin="5" 
-                        Padding="5" Command="{Binding AddIOFiles}"/>
-                <Button Grid.Column="0" Grid.Row="4" Content="Add Output File" FontSize="20" Margin="5" 
-                        Padding="5" Command="{Binding AddOutputFile}"/>
-                <TextBox Grid.Row="5" Grid.Column="0" Margin="5" Padding="5" Text="{Binding Path=NumberOfSecondsToWait, Mode=TwoWay}"
-                         ToolTip="Number of seconds to wait until closing home exercise"></TextBox>
-                <Button Grid.Column="0" Grid.Row="6" Content="Start Test" FontSize="20" VerticalAlignment="Bottom" 
-                        Padding="5" Margin="5" Command="{Binding StartTest}"/>
-
-                <DataGrid Grid.Column="2" Grid.Row="3" Grid.RowSpan="4" Background="AliceBlue" ItemsSource="{Binding InputOutputModels, Mode=TwoWay}"
+                <!--Row -> 0-->
+                <TextBlock Text="Input/Output Test" FontSize="26" Grid.Column="0" Grid.ColumnSpan="3" 
+                           HorizontalAlignment="Center" Grid.Row="0"/>
+                <!--Row -> 1-->
+                <TextBlock Text="Added test cases" FontSize="20" Grid.Column="1" Grid.ColumnSpan="2" 
+                           HorizontalAlignment="Center" Grid.Row="1" Margin="5"/>
+                <!--Row -> 2-->
+                <DataGrid Grid.Column="2" Grid.Row="2" Grid.RowSpan="4" Background="AliceBlue" 
+                          ItemsSource="{Binding InputOutputModels, Mode=TwoWay}"
                           AutoGenerateColumns="False" Margin="5">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Input" Width="0.5*" Binding="{Binding InputText, Mode=TwoWay}"/>
                         <DataGridTextColumn Header="Output" Width="0.5*" Binding="{Binding OutputText, Mode=TwoWay}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-               
+                <Button Grid.Column="0" Grid.Row="2" Content="Add I/O Files" FontSize="20" Margin="5" 
+                        Padding="5" Command="{Binding AddIOFiles}"/>
+                <!--Row -> 3-->
+                <Button Grid.Column="0" Grid.Row="3" Content="Add Output File" FontSize="20" Margin="5" 
+                        Padding="5" Command="{Binding AddOutputFile}"/>
+                <!--Row -> 4-->
+                <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Wait:" HorizontalAlignment="Left" Padding="5" 
+                               FontSize="15" VerticalAlignment="Center"></TextBlock>
+                    <TextBox  Margin="3" MinWidth="50" HorizontalAlignment="Center" TextAlignment="Center"
+                              Text="{Binding Path=NumberOfSecondsToWait, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ToolTip="Number of seconds to wait until closing home exercise. Must be more then 0 to start test">
+                    </TextBox>
+                    <TextBlock  Text="seconds" HorizontalAlignment="Right" Padding="5" FontSize="15" 
+                                VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+                <!--Row -> 5-->
+                <Button Grid.Column="0" Grid.Row="5" Content="Start Test" FontSize="20" VerticalAlignment="Bottom" 
+                        Padding="5" Margin="5" Command="{Binding StartTest}"/>
 
             </Grid>
-
         </Border>
     </Grid>
 </UserControl>

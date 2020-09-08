@@ -23,6 +23,5 @@ namespace IOTestModule.Views
         {
             InitializeComponent();
         }
-
     }
 }

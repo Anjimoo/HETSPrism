@@ -13,7 +13,7 @@ namespace IOTestModule.Services
     public static class RunTest
     {
         public static async Task StartRunTest(IReadOnlyList<HomeExercise> homeExercises,
-            IReadOnlyList<InputOutputModel> inputOutputModels, int numberOfSecondsToWait, IEventAggregator _eventAggregator)
+            IReadOnlyList<InputOutputModel> inputOutputModels, int numberOfSecondsToWait, IEventAggregator eventAggregator=null)
         {
             for (var index = 0; index < homeExercises.Count; index++)
             {
@@ -57,8 +57,9 @@ namespace IOTestModule.Services
                         if (output == null)
                         {
                             homeExercise.RunTestErrorOutput = $"Exercise didn't stopped after {numberOfSecondsToWait} seconds";
+                            homeExercise.IsRunTestOk = "Run time error";
                             process.Kill();
-                            _eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
+                            eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
                             //progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
                             continue;
                         }
@@ -71,7 +72,10 @@ namespace IOTestModule.Services
                         homeExercise.RunTestErrorOutput = srError.ReadToEnd();
                         if (homeExercise.RunTestErrorOutput != "")
                         {
-                            homeExercise.IsRunTestOk = "No";
+                            homeExercise.IsRunTestOk = "Has error";
+                        }else if (homeExercise.IsRunTestOk != "Run time error")
+                        {
+                            homeExercise.IsRunTestOk = "Success";
                         }
                     }
 
@@ -79,7 +83,7 @@ namespace IOTestModule.Services
                 }
 
                 CompatibleChecker(homeExercise);
-                _eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
+                eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
                 //progress?.Report(((double)(index+1)/homeExercises.Count) * 100);
             }
         }
@@ -106,12 +110,12 @@ namespace IOTestModule.Services
             {
                 if (compatibleRunTest == "not compatible")
                 {
-                    homeExercise.IsCompatibleRunTest = "No";
+                    homeExercise.IsCompatibleRunTest = "Not compatible";
                     break;
                 }
                 else
                 {
-                    homeExercise.IsCompatibleRunTest = "Yes";
+                    homeExercise.IsCompatibleRunTest = "Compatible";
                 }
             }
         }
