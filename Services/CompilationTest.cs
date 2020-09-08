@@ -31,7 +31,7 @@ namespace HETSPrism.Services
                 }
                 catch
                 {
-                    return "Error: javac.exe compiler not found in path variables";
+                    throw new Exception("Error: javac.exe compiler not found in path variables");
                 }
 
                 StreamReader se = process.StandardError;

@@ -5,7 +5,6 @@ namespace DataBuilders
     public class HomeExercise : BindableBase
     {
         private string _homeExercisePath;
-        
         public string HomeExercisePath { get; set; }
 
         private string _homeExerciseFolderName;
@@ -15,10 +14,10 @@ namespace DataBuilders
             set { SetProperty(ref _homeExerciseFolderName, value); }
         }
 
+        public string RunTestOutputs { get; set; }
+
         private string _runTestOutput;
         public string RunTestOutput { get; set; }
-
-        public List<string> CompatibleRunTestList { get; set; }
 
         private string _isCompatibleRunTest;
         public string IsCompatibleRunTest
@@ -47,5 +46,7 @@ namespace DataBuilders
             set { SetProperty(ref _isCompilationTestOk, value); }
         }
 
+        public List<string> CompatibleRunTestList { get; set; }
+        public List<string> RunTestErrorsList { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace ResultsModuleTests
         public void ToCsvTests()
         {
             //Arrange
-            string AppPath = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+            string AppPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
             DirectoryInfo myDir = new DirectoryInfo(AppPath);
             string dataDir = myDir.Parent.Parent.FullName.ToString();
             HomeExercise homeExercise = new HomeExercise();

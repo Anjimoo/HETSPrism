@@ -19,6 +19,7 @@ namespace IOTestModule.Services
             {
                 var homeExercise = homeExercises[index];
                 homeExercise.CompatibleRunTestList = new List<string>();
+                homeExercise.RunTestErrorsList = new List<string>();
                 foreach (var inputOutputModel in inputOutputModels)
                 {
                     Process process = new Process();
@@ -37,9 +38,9 @@ namespace IOTestModule.Services
                     {
                         process.Start();
                     }
-                    catch (InvalidCastException e)
+                    catch
                     {
-                        throw new InvalidCastException("Error: java.exe compiler not found in path variables", e);
+                        throw new Exception("Error: java.exe compiler not found in path variables");
                     }
 
                     // needed if java Program wants some enter input
@@ -56,11 +57,9 @@ namespace IOTestModule.Services
                         await Task.WhenAny(readOutputTask, Task.Delay(TimeSpan.FromSeconds(numberOfSecondsToWait)));
                         if (output == null)
                         {
-                            homeExercise.RunTestErrorOutput = $"Exercise didn't stopped after {numberOfSecondsToWait} seconds";
-                            homeExercise.IsRunTestOk = "Run time error";
+                            homeExercise.RunTestErrorsList.Add("Exercise didn't stopped after {numberOfSecondsToWait} seconds");
                             process.Kill();
-                            eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
-                            //progress?.Report(((double)(index + 1) / homeExercises.Count) * 100);
+                            eventAggregator?.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
                             continue;
                         }
                         homeExercise.RunTestOutput = output;
@@ -69,22 +68,13 @@ namespace IOTestModule.Services
                     // needed to see errors from program
                     using (StreamReader srError = process.StandardError)
                     {
-                        homeExercise.RunTestErrorOutput = srError.ReadToEnd();
-                        if (homeExercise.RunTestErrorOutput != "")
-                        {
-                            homeExercise.IsRunTestOk = "Has error";
-                        }else if (homeExercise.IsRunTestOk != "Run time error")
-                        {
-                            homeExercise.IsRunTestOk = "Success";
-                        }
+                        homeExercise.RunTestErrorsList.Add(srError.ReadToEnd());
                     }
-
                     CompareOutputs(inputOutputModel, homeExercise);
                 }
-
+                ErrorsChecker(homeExercise);
                 CompatibleChecker(homeExercise);
-                eventAggregator.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
-                //progress?.Report(((double)(index+1)/homeExercises.Count) * 100);
+                eventAggregator?.GetEvent<UpdateProgressBarEvent>().Publish(((double)(index + 1) / homeExercises.Count) * 100);
             }
         }
 
@@ -102,6 +92,8 @@ namespace IOTestModule.Services
                 //do something when the output's not compatible 
                 homeExercise.CompatibleRunTestList.Add("not compatible");
             }
+
+            homeExercise.RunTestOutputs += $"{homeExercise.RunTestOutput}\n";
         }
 
         private static void CompatibleChecker(HomeExercise homeExercise)
@@ -117,6 +109,30 @@ namespace IOTestModule.Services
                 {
                     homeExercise.IsCompatibleRunTest = "Compatible";
                 }
+            }
+        }
+
+        private static void ErrorsChecker(HomeExercise homeExercise)
+        {
+            foreach (var error in homeExercise.RunTestErrorsList)
+            {
+                if (error != "")
+                {
+                    homeExercise.IsRunTestOk = "Has Errors";
+                    ConcatErrorsOutputs(homeExercise);
+                }
+                else
+                {
+                    homeExercise.IsRunTestOk = "Fine";
+                }
+            }
+        }
+
+        private static void ConcatErrorsOutputs(HomeExercise homeExercise)
+        {
+            foreach (var error in homeExercise.RunTestErrorsList)
+            {
+                homeExercise.RunTestErrorOutput += $"{error}\n";
             }
         }
     }

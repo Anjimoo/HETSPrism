@@ -33,6 +33,14 @@ namespace IOTestModule.ViewModels
             get { return _numberOfSecondsToWait; }
             set
             {
+                if (value > 0)
+                {
+                    CanStartTest = true;
+                }
+                else
+                {
+                    CanStartTest = false;
+                }
                 if (value > 500) {value = 500; MessageBox.Show("Value is more then 500"); }
                 SetProperty(ref _numberOfSecondsToWait, value);
             }
@@ -49,26 +57,26 @@ namespace IOTestModule.ViewModels
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<UpdateHomeExercisesEvent>().Subscribe(UpdatedHomeExercises);
-            StartTest = new DelegateCommand(ExecuteStartTest, CanExecuteStartTest)
-                .ObservesProperty(() => NumberOfSecondsToWait);
+            StartTest = new DelegateCommand(ExecuteStartTest)
+                .ObservesCanExecute(() => CanStartTest);
             AddIOFiles = new DelegateCommand(ExecuteAddIOFiles);
             AddOutputFile = new DelegateCommand<InputOutputModel>(ExecuteAddOutputFile);
             InputOutputModels = new ObservableCollection<InputOutputModel>();
             _homeExercises = new ObservableCollection<HomeExercise>();
         }
 
-        private bool CanExecuteStartTest()
-        {
-            if (NumberOfSecondsToWait > 0)
-            {
-                CanStartTest = true;
-            }
-            else
-            {
-                return false;
-            }
-            return CanStartTest;
-        }
+        //private bool CanExecuteStartTest()
+        //{
+        //    if (NumberOfSecondsToWait > 0)
+        //    {
+        //        CanStartTest = true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //    return CanStartTest;
+        //}
 
         //called on Add Output File click
         private void ExecuteAddOutputFile(InputOutputModel inputOutputModel)
