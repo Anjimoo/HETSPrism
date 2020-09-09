@@ -14,6 +14,7 @@ namespace DataBuilders
             set { SetProperty(ref _homeExerciseFolderName, value); }
         }
 
+        public string HomeExerciseName { get; set; }
         public string RunTestOutputs { get; set; }
 
         private string _runTestOutput;

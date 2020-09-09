@@ -26,8 +26,9 @@ namespace IOTestModule.Services
                     process.StartInfo.FileName = @"java.exe";
                     // arguments actually will not work if program does not need arguments and instead wants input in running time
                     process.StartInfo.Arguments =
-                        $"{homeExercise.HomeExercisePath} < {inputOutputModel.InputTextFullPath}";
+                        $"\"{homeExercise.HomeExerciseName}\" < \"{inputOutputModel.InputTextFullPath}\"";
                     //process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.WorkingDirectory = homeExercise.HomeExercisePath;
                     process.StartInfo.UseShellExecute = false;
                     process.StartInfo.CreateNoWindow = true;
                     process.StartInfo.RedirectStandardOutput = true;

@@ -19,10 +19,12 @@ namespace ResultsModule.Models
             DirectoryInfo myDir = new DirectoryInfo(appPath);
             string dataDir = myDir.Parent.Parent.FullName.ToString();
             string csvFile = $"{dataDir}\\HomeExerciseReport.csv";
-
-            using (var writer = new StreamWriter(csvFile))
+            
+            using (var writer = new StreamWriter(csvFile,false, Encoding.UTF8))
+                
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
+                
                 csv.WriteRecords(homeExercises);
             }
             if(Directory.Exists(dataDir))

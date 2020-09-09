@@ -65,18 +65,6 @@ namespace IOTestModule.ViewModels
             _homeExercises = new ObservableCollection<HomeExercise>();
         }
 
-        //private bool CanExecuteStartTest()
-        //{
-        //    if (NumberOfSecondsToWait > 0)
-        //    {
-        //        CanStartTest = true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //    return CanStartTest;
-        //}
 
         //called on Add Output File click
         private void ExecuteAddOutputFile(InputOutputModel inputOutputModel)

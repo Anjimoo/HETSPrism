@@ -112,8 +112,10 @@ namespace HETSPrism.Services
         private void CreateHomeExercise(string fileName)
         {
             string fileID = new DirectoryInfo(Path.GetDirectoryName(fileName)).Name;
+            string folderPath = Path.GetDirectoryName(fileName) + "\\";
+            string name = Path.GetFileName(fileName);
             var homeExercise = new HomeExercise()
-            { HomeExercisePath = fileName, HomeExerciseFolderName = fileID};
+            { HomeExercisePath = folderPath, HomeExerciseFolderName = fileID, HomeExerciseName = name};
             HomeExercises.Add(homeExercise);
         }
 
