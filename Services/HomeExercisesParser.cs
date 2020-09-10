@@ -112,12 +112,21 @@ namespace HETSPrism.Services
 
         private void CreateHomeExercise(string fileName)
         {
-            string fileID = new DirectoryInfo(Path.GetDirectoryName(fileName)).Name;
-            string folderPath = Path.GetDirectoryName(fileName) + "\\";
-            string name = Path.GetFileName(fileName);
-            var homeExercise = new HomeExercise()
-            { HomeExercisePath = folderPath, HomeExerciseFolderName = fileID, HomeExerciseName = name};
-            HomeExercises.Add(homeExercise);
+            bool isMain = false;
+            if (fileName.EndsWith(".java"))
+            {
+                isMain = IsMainFile(fileName);
+            }
+
+            if (isMain || fileName.EndsWith(".jar"))
+            {
+                string fileID = new DirectoryInfo(Path.GetDirectoryName(fileName)).Name;
+                string folderPath = Path.GetDirectoryName(fileName) + "\\";
+                string name = Path.GetFileName(fileName);
+                var homeExercise = new HomeExercise()
+                { HomeExercisePath = folderPath, HomeExerciseFolderName = fileID, HomeExerciseName = name };
+                HomeExercises.Add(homeExercise);
+            }
         }
 
         private void ExtractZipFile(string filePath)
@@ -131,10 +140,21 @@ namespace HETSPrism.Services
             catch(Exception e)
             {
                 MessageBox.Show(e.Message + $"in file {filePath}");
-            }
-            
+            }  
+        }
 
-            
+        private bool IsMainFile(string filePath)
+        {
+            bool isMain = false;
+            using (StreamReader sr = File.OpenText(filePath))
+            {
+                string text = sr.ReadToEnd();
+                if (text.Contains("main"))
+                {
+                    isMain = true;
+                }
+            }
+            return isMain;
         }
     }
 }
