@@ -18,7 +18,7 @@ namespace HETSPrism.Services
                 // definition of process
                 Process process = new Process();
                 process.StartInfo.FileName = "javac.exe";
-                process.StartInfo.Arguments = $"-Xlint \"{homeExercise.HomeExerciseName}\"";
+                process.StartInfo.Arguments = $"\"{homeExercise.HomeExerciseName}\"";
                 process.StartInfo.WorkingDirectory = Path.GetDirectoryName(homeExercise.HomeExercisePath);
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Windows;
 
 namespace HETSPrism.Services
 {
@@ -122,10 +123,18 @@ namespace HETSPrism.Services
         private void ExtractZipFile(string filePath)
         {
             ExtractPath = Path.GetDirectoryName(filePath);
-           
-            ZipFile.ExtractToDirectory(filePath, ExtractPath, CodePagesEncodingProvider.Instance.GetEncoding("DOS-862"), true);
+            try 
+            {
+                ZipFile.ExtractToDirectory(filePath, ExtractPath, CodePagesEncodingProvider.Instance.GetEncoding("DOS-862"), true);
+                File.Delete(filePath);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message + $"in file {filePath}");
+            }
+            
 
-            File.Delete(filePath);
+            
         }
     }
 }
